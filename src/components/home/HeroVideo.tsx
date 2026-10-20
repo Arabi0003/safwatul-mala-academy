@@ -7,10 +7,7 @@ import { academy } from "@/config/academy";
 export default function HeroVideo() {
   return (
     <section className="relative min-h-[95vh] w-full flex items-center justify-center overflow-hidden bg-[var(--navy-dark)] pt-20">
-      {/* 
-        Background Video Layer 
-        Removed JS dependency: Video opacity is now handled by pure CSS so it ALWAYS shows.
-      */}
+      {/* Background Video Layer - Direct CSS rendering */}
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
@@ -20,20 +17,18 @@ export default function HeroVideo() {
           preload="auto"
           className="h-full w-full object-cover opacity-40 scale-105"
         >
-          {/* Fallback chain: Tries the optimized FFmpeg web version first, then originals */}
           <source src="/videos/safwat_web.mp4" type="video/mp4" />
           <source src="/videos/safwat.mp4" type="video/mp4" />
           <source src="/videos/safwa.mp4" type="video/mp4" />
         </video>
 
-        {/* Deep blue gradient overlays for text readability */}
+        {/* Gradient overlays for high contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--navy-dark)] via-[var(--navy-dark)]/90 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--navy-dark)] via-transparent to-[var(--navy-dark)]/60" />
       </div>
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid gap-12 lg:grid-cols-12 items-center py-12">
-        {/* Left column */}
         <div className="lg:col-span-7 flex flex-col items-start space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/40 bg-[var(--ocean)]/20 px-4 py-1.5 backdrop-blur-md">
             <span className="h-2 w-2 rounded-full bg-[var(--orange)] animate-pulse" />
@@ -48,7 +43,7 @@ export default function HeroVideo() {
           </h1>
 
           <p className="max-w-xl text-lg text-slate-200 leading-relaxed font-medium">
-            {academy.tagline}. A premier Islamic institution in Abuja combining authentic Qur'anic studies, Arabic mastery, and robust conventional academics.
+            {academy.tagline}. A premier Islamic educational institution in Abuja combining authentic Qur'anic studies, Arabic mastery, and robust conventional academics.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
@@ -78,7 +73,6 @@ export default function HeroVideo() {
           </div>
         </div>
 
-        {/* Right column / Feature Card */}
         <div className="lg:col-span-5 relative hidden lg:block">
           <div className="relative rounded-3xl border border-white/10 bg-[var(--navy)]/40 p-8 backdrop-blur-xl shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
