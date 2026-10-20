@@ -1,4 +1,5 @@
-﻿"use client";
+"use client";
+
 import PageHero from "@/components/ui/PageHero";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { academy } from "@/config/academy";
@@ -6,17 +7,22 @@ import { useState } from "react";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const phoneDisplay = typeof academy.phone === "string" ? academy.phone : academy.phone.formatted;
 
   return (
     <main className="bg-white">
-      <PageHero tag="Get in Touch" title="Contact AS Safwatul-Mala" subtitle="We would be delighted to hear from you. Reach out for inquiries, admissions, or partnerships." />
+      <PageHero 
+        tag="Get in Touch" 
+        title="Contact AS Safwatul-Mala" 
+        subtitle="We would be delighted to hear from you. Reach out for inquiries, admissions, or partnerships." 
+      />
 
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2 space-y-6">
             {[
               { icon: MapPin, title: "Visit Us", info: "Abuja, Federal Capital Territory, Nigeria" },
-              { icon: Phone, title: "Call Us", info: academy.phone },
+              { icon: Phone, title: "Call Us", info: phoneDisplay },
               { icon: Mail, title: "Email Us", info: academy.emails.join(" | ") },
               { icon: Clock, title: "Office Hours", info: "Mon - Fri: 8am - 4pm | Sat: 9am - 1pm" },
             ].map((item, i) => (

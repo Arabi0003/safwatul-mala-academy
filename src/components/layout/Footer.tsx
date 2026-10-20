@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { 
-  BookOpen, 
   MapPin, 
   Phone, 
   Mail, 
@@ -19,9 +18,11 @@ export default function Footer() {
     setYear(new Date().getFullYear());
   }, []);
 
+  const phoneHref = typeof academy.phone === "string" ? `tel:${academy.phone}` : academy.phone.href;
+  const phoneDisplay = typeof academy.phone === "string" ? academy.phone : academy.phone.formatted;
+
   return (
     <footer className="bg-[var(--navy-dark)] text-white border-t-4 border-[var(--orange)] relative overflow-hidden">
-      {/* Background Decorative Pattern */}
       <div 
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
@@ -30,7 +31,6 @@ export default function Footer() {
         }}
       />
 
-      {/* Top Banner / Newsletter */}
       <div className="border-b border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-6 py-12 grid lg:grid-cols-2 gap-8 items-center">
           <div>
@@ -59,18 +59,16 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Main Footer Links */}
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
-        
-        {/* Col 1: Brand & Hadith */}
         <div className="space-y-6">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="relative h-12 w-12 rounded-xl bg-white p-1 overflow-hidden shadow-lg border border-[var(--orange)]/40 flex-none">
+            {/* CIRCULAR LOGO */}
+            <div className="relative h-12 w-12 rounded-full bg-white p-0.5 overflow-hidden shadow-lg border-2 border-[var(--orange)] flex-none">
               <Image 
                 src="/safwa.png" 
                 alt="Safwatul-Mala Academy Logo" 
                 fill 
-                className="object-contain p-1 rounded-lg"
+                className="object-cover rounded-full"
               />
             </div>
             <div>
@@ -97,7 +95,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Col 2: Quick Links */}
         <div>
           <h4 className="font-bold text-white text-base mb-6 pb-2 border-b border-[var(--orange)]/30 inline-block">
             Quick Links
@@ -142,7 +139,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Col 3: Programmes */}
         <div>
           <h4 className="font-bold text-white text-base mb-6 pb-2 border-b border-[var(--orange)]/30 inline-block">
             Academic Programs
@@ -187,7 +183,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Col 4: Contact Info */}
         <div>
           <h4 className="font-bold text-white text-base mb-6 pb-2 border-b border-[var(--orange)]/30 inline-block">
             Contact Academy
@@ -199,7 +194,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Phone className="h-5 w-5 text-[var(--orange-glow)] flex-none" />
-              <a href={`tel:${academy.phone}`} className="hover:text-[var(--orange-glow)] transition">{academy.phone}</a>
+              <a href={phoneHref} className="hover:text-[var(--orange-glow)] transition">{phoneDisplay}</a>
             </li>
             <li className="flex items-start gap-3">
               <Mail className="h-5 w-5 text-[var(--orange-glow)] flex-none mt-0.5" />
@@ -211,10 +206,8 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-
       </div>
 
-      {/* Bottom Legal & Copyright Bar */}
       <div className="border-t border-white/10 bg-black/30 py-6 relative z-10">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>

@@ -1,6 +1,8 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
 import { academy } from "@/config/academy";
+
+const phoneStr = typeof academy.phone === "string" ? academy.phone : academy.phone.formatted;
 
 const sections = [
   { title: "Welcome", body: "In the name of Allah, the Most Gracious, the Most Merciful. These Terms govern your use of AS Safwatul-Mala Academy's services, website, and enrollment. By registering, you agree to be bound by these conditions." },
@@ -14,7 +16,7 @@ const sections = [
   { title: "Privacy & Data", body: "We treat personal information as an amanah. Data is used solely for educational and administrative purposes. See our Privacy Policy for details." },
   { title: "Limitation of Liability", body: "The Academy delivers programmes with reasonable care but does not guarantee specific outcomes. Liability is limited to the fullest extent permitted by law." },
   { title: "Changes", body: "These Terms may be updated. Material changes will be communicated and posted on this page with a revised date." },
-  { title: "Contact", body: `For questions, write to ${academy.emails[0]} or call ${academy.phone}.` },
+  { title: "Contact", body: `For questions, write to ${academy.emails[0]} or call ${phoneStr}.` },
 ];
 
 export default function TermsPage() {

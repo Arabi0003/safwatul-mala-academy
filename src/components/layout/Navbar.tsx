@@ -1,276 +1,247 @@
-﻿"use client";
+"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, LogIn } from "lucide-react";
-import { academy } from "@/config/academy";
+import { 
+  Menu, X, ChevronDown, GraduationCap, BookOpen, 
+  Sparkles, Layers, Globe, UserCheck, Shield
+} from "lucide-react";
 
-const links = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  {
-    name: "Programmes",
-    path: "#",
-    sub: [
-      { name: "Qur'an Studies", path: "/quran-studies" },
-      { name: "Huruf & Arabic", path: "/huruf-arabic" },
-      { name: "Islamic Studies", path: "/islamic-studies" },
-      { name: "Other Academic Subjects", path: "/academic-subjects" },
-    ],
-  },
-  { name: "Teachers", path: "/teachers" },
-  { name: "Admissions", path: "/admissions" },
-  { name: "Contact", path: "/contact" },
-];
-
-export default function Navbar() {
+function NavbarContent() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     setMobileOpen(false);
+    setActiveDropdown(null);
   }, [pathname]);
 
+  const programmeLinks = [
+    { title: "Qur'an Studies", desc: "Hifz, Tajweed, and Qira'at", href: "/quran-studies", icon: BookOpen },
+    { title: "Huruf & Arabic", desc: "Alphabet, Grammar, Conversation", href: "/huruf-arabic", icon: Sparkles },
+    { title: "Islamic Studies", desc: "Fiqh, Aqeedah, Seerah, Hadith", href: "/islamic-studies", icon: GraduationCap },
+    { title: "Academic Subjects", desc: "STEM, Humanities, Languages", href: "/academic-subjects", icon: Layers },
+    { title: "Online Learning", desc: "Global Virtual Classrooms", href: "/online-learning", icon: Globe },
+  ];
+
   return (
-    <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 inset-x-0 z-[80] transition-all duration-500 ease-in-out ${
-          scrolled ? "pt-3 px-3 sm:px-4" : "pt-0"
-        }`}
-      >
-        <div
-          className={`mx-auto transition-all duration-500 flex items-center justify-between ${
-            scrolled
-              ? "max-w-5xl rounded-full glass-silver shadow-[0_8px_30px_rgba(36,61,44,0.08)] px-5 sm:px-6 py-2"
-              : "w-full max-w-7xl bg-gradient-to-b from-white/95 via-white/80 to-transparent px-5 sm:px-6 py-4 lg:px-8"
-          }`}
-        >
-          {/* Logo — safwa.png perfect placement */}
-          <Link href="/" className="flex items-center gap-3 group relative z-10 min-w-0">
-            <div
-              className={`relative shrink-0 transition-all duration-500 ${
-                scrolled ? "w-11 h-11" : "w-14 h-14 md:w-16 md:h-16"
-              }`}
-            >
-              <Image
-                src="/safwa.png"
-                alt="AS SAFWATUL-MALA ACADEMY"
-                fill
-                className="object-contain drop-shadow-md group-hover:scale-[1.04] transition-transform duration-300"
-                priority
-                sizes="64px"
-              />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span
-                className={`font-heading font-bold text-green-deep leading-tight truncate transition-all duration-500 ${
-                  scrolled ? "text-base sm:text-lg" : "text-lg sm:text-xl md:text-2xl"
-                }`}
-              >
-                {academy.shortName}
-              </span>
-              {!scrolled && (
-                <span className="text-green-600 text-[10px] uppercase tracking-[0.18em] font-semibold hidden sm:block">
-                  Academy
-                </span>
-              )}
-            </div>
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? "bg-white/95 backdrop-blur-md shadow-md py-3 text-[var(--navy)]" 
+          : "bg-white/90 backdrop-blur-sm py-4 text-[var(--navy)] border-b border-slate-100"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+        
+        {/* Brand Logo - CIRCULAR / CIRCLE */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative h-12 w-12 rounded-full bg-white p-0.5 shadow-md border-2 border-[var(--orange)] flex-none overflow-hidden transition-transform group-hover:scale-105">
+            <Image 
+              src="/safwa.png" 
+              alt="Safwatul-Mala Academy Logo" 
+              fill 
+              className="object-cover rounded-full"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-[Playfair] text-lg font-black tracking-tight text-[var(--navy)] leading-tight">
+              AS SAFWATUL-MALA
+            </span>
+            <span className="text-[10px] font-bold text-[var(--orange)] tracking-widest uppercase">
+              ACADEMY • ABUJA
+            </span>
+          </div>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-7 font-medium text-sm">
+          <Link 
+            href="/" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
+          >
+            Home
           </Link>
 
-          {/* Desktop nav — silver text, green hover */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {links.map((link) => (
-              <div
-                key={link.name}
-                className="relative"
-                onMouseEnter={() => setActiveDropdown(link.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                {link.sub ? (
-                  <button
-                    className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-silver-700 hover:text-green-700 transition-colors"
-                  >
-                    {link.name}
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 opacity-60 transition-transform ${
-                        activeDropdown === link.name ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                ) : (
-                  <Link
-                    href={link.path}
-                    className={`relative px-3.5 py-2 text-sm font-medium transition-colors group ${
-                      pathname === link.path
-                        ? "text-green-700"
-                        : "text-silver-700 hover:text-green-700"
-                    }`}
-                  >
-                    {link.name}
-                    <span
-                      className={`absolute bottom-1 left-3.5 right-3.5 h-[2px] rounded-full bg-green-600 transition-transform origin-left duration-300 ease-out ${
-                        pathname === link.path ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                      }`}
-                    />
-                  </Link>
-                )}
-
-                {link.sub && (
-                  <AnimatePresence>
-                    {activeDropdown === link.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                        transition={{ duration: 0.18 }}
-                        className="absolute top-full left-0 pt-2 w-64"
-                      >
-                        <div className="bg-white rounded-2xl shadow-xl shadow-green-deep/10 border border-silver-200 overflow-hidden flex flex-col p-1.5">
-                          {link.sub.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.path}
-                              className="px-4 py-2.5 text-sm text-silver-700 hover:text-green-deep hover:bg-green-50 rounded-xl transition-colors"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )}
-              </div>
-            ))}
-          </nav>
-
-          {/* Portals CTA — natural green */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href="/portal"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-green-700 hover:bg-green-600 shadow-md shadow-green-deep/15 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <LogIn className="w-4 h-4" />
-              Portals
-            </Link>
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="lg:hidden p-2.5 rounded-full text-green-deep hover:bg-green-50 border border-transparent hover:border-silver-200 transition-colors relative z-10"
-            aria-label="Open menu"
+          <Link 
+            href="/about" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/about" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
           >
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
-      </motion.header>
+            About
+          </Link>
 
-      {/* Mobile drawer — left slide, white body, green accents */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 bg-green-deep/50 backdrop-blur-sm z-[90] lg:hidden"
-            />
-
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 220 }}
-              className="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-[100] lg:hidden flex flex-col overflow-y-auto"
+          {/* Programmes Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setActiveDropdown("programmes")}
+            onMouseLeave={() => setActiveDropdown(null)}
+          >
+            <button 
+              className="flex items-center gap-1 hover:text-[var(--orange)] transition py-2 text-[var(--navy)]"
             >
-              <div className="p-5 flex items-center justify-between border-b border-silver-200 bg-silver-50">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 relative shrink-0">
-                    <Image src="/safwa.png" alt="Logo" fill className="object-contain" />
-                  </div>
-                  <div>
-                    <p className="font-heading font-bold text-green-deep text-lg leading-tight">
-                      {academy.shortName}
-                    </p>
-                    <p className="text-[10px] uppercase tracking-widest text-green-600 font-semibold">
-                      Menu
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="p-2 text-silver-700 hover:text-green-deep bg-white rounded-full border border-silver-200 shadow-sm"
-                  aria-label="Close menu"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+              Programmes <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${activeDropdown === "programmes" ? "rotate-180 text-[var(--orange)]" : ""}`} />
+            </button>
 
-              <div className="flex-1 px-3 py-5 space-y-1 bg-white">
-                {links.map((link) => (
-                  <div key={link.name}>
-                    {link.sub ? (
-                      <div className="mb-2">
-                        <div className="px-4 py-2 text-xs font-bold text-green-600 uppercase tracking-wider">
-                          {link.name}
-                        </div>
-                        <div className="flex flex-col gap-0.5 pl-3 ml-3 border-l-2 border-green-200">
-                          {link.sub.map((sub) => (
-                            <Link
-                              key={sub.name}
-                              href={sub.path}
-                              className="px-4 py-2.5 text-[15px] text-silver-700 hover:text-green-deep hover:bg-green-50 rounded-xl transition-colors"
-                            >
-                              {sub.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <Link
-                        href={link.path}
-                        className={`block px-4 py-3 text-lg font-medium rounded-xl transition-colors ${
-                          pathname === link.path
-                            ? "text-green-deep bg-green-50"
-                            : "text-green-deep hover:bg-green-50"
-                        }`}
-                      >
-                        {link.name}
-                      </Link>
-                    )}
-                  </div>
+            {activeDropdown === "programmes" && (
+              <div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 p-3 grid gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                {programmeLinks.map((p) => (
+                  <Link 
+                    key={p.href}
+                    href={p.href}
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition group"
+                  >
+                    <div className="h-9 w-9 rounded-lg bg-[var(--orange)]/10 text-[var(--orange)] flex items-center justify-center flex-none group-hover:bg-[var(--orange)] group-hover:text-white transition">
+                      <p.icon className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-[var(--navy)] text-xs group-hover:text-[var(--orange)] transition">{p.title}</p>
+                      <p className="text-[11px] text-slate-500">{p.desc}</p>
+                    </div>
+                  </Link>
                 ))}
               </div>
+            )}
+          </div>
 
-              <div className="p-5 border-t border-silver-200 bg-white">
-                <Link
-                  href="/portal"
-                  className="flex items-center justify-center gap-2 w-full py-3.5 bg-green-700 text-white rounded-2xl font-semibold text-base hover:bg-green-600 shadow-md transition-all"
-                >
-                  <LogIn className="w-5 h-5" />
-                  Access Portals
-                </Link>
+          <Link 
+            href="/admissions" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/admissions" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
+          >
+            Admissions
+          </Link>
+
+          <Link 
+            href="/teachers" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/teachers" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
+          >
+            Teachers
+          </Link>
+
+          <Link 
+            href="/calendar" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/calendar" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
+          >
+            Calendar
+          </Link>
+
+          <Link 
+            href="/contact" 
+            className={`hover:text-[var(--orange)] transition ${pathname === "/contact" ? "text-[var(--orange)] font-bold" : "text-[var(--navy)]"}`}
+          >
+            Contact
+          </Link>
+        </nav>
+
+        {/* Right CTA Actions */}
+        <div className="hidden lg:flex items-center gap-3">
+          <Link 
+            href="/portal" 
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold border border-[var(--navy)]/20 text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white transition"
+          >
+            <Shield className="h-3.5 w-3.5" /> Portal
+          </Link>
+
+          <Link 
+            href="/enroll" 
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold bg-[var(--orange)] hover:bg-[var(--orange-soft)] text-white shadow-md hover:shadow-lg transition"
+          >
+            <UserCheck className="h-4 w-4" /> Enroll Now
+          </Link>
+        </div>
+
+        {/* Mobile Hamburger Button */}
+        <button 
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden p-2 rounded-xl text-[var(--navy)] hover:bg-slate-100 transition"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="h-6 w-6 text-[var(--orange)]" /> : <Menu className="h-6 w-6" />}
+        </button>
+
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 top-[73px] bg-black/40 z-40 lg:hidden" onClick={() => setMobileOpen(false)}>
+          <div 
+            className="w-4/5 max-w-sm h-full bg-white shadow-2xl p-6 flex flex-col gap-6 overflow-y-auto animate-in slide-in-from-left duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+              <div className="relative h-10 w-10 rounded-full bg-white p-0.5 border border-[var(--orange)] flex-none overflow-hidden">
+                <Image src="/safwa.png" alt="Logo" fill className="object-cover rounded-full" />
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+              <div>
+                <p className="font-[Playfair] font-bold text-[var(--navy)] text-sm">AS SAFWATUL-MALA</p>
+                <p className="text-[10px] font-bold text-[var(--orange)] uppercase">Academy Abuja</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 font-medium text-sm text-[var(--navy)]">
+              <Link href="/" className="p-2 hover:text-[var(--orange)]">Home</Link>
+              <Link href="/about" className="p-2 hover:text-[var(--orange)]">About Us</Link>
+              
+              <div className="p-2">
+                <p className="text-xs font-bold uppercase text-[var(--orange)] mb-2">Programmes</p>
+                <div className="pl-3 flex flex-col gap-2 border-l-2 border-slate-100">
+                  {programmeLinks.map((p) => (
+                    <Link key={p.href} href={p.href} className="text-xs py-1 hover:text-[var(--orange)] text-slate-700">
+                      {p.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <Link href="/admissions" className="p-2 hover:text-[var(--orange)]">Admissions</Link>
+              <Link href="/teachers" className="p-2 hover:text-[var(--orange)]">Teachers</Link>
+              <Link href="/calendar" className="p-2 hover:text-[var(--orange)]">Calendar</Link>
+              <Link href="/news" className="p-2 hover:text-[var(--orange)]">News & Articles</Link>
+              <Link href="/contact" className="p-2 hover:text-[var(--orange)]">Contact Us</Link>
+            </div>
+
+            <div className="mt-auto pt-4 border-t border-slate-100 flex flex-col gap-3">
+              <Link 
+                href="/portal" 
+                className="w-full text-center py-3 rounded-xl border border-[var(--navy)] text-[var(--navy)] font-bold text-xs"
+              >
+                Portal Access
+              </Link>
+              <Link 
+                href="/enroll" 
+                className="w-full text-center py-3 rounded-xl bg-[var(--orange)] text-white font-bold text-xs shadow-md"
+              >
+                Enroll Online
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white py-4 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <div className="font-[Playfair] text-lg font-black text-[var(--navy)]">AS SAFWATUL-MALA</div>
+        </div>
+      </header>
+    }>
+      <NavbarContent />
+    </Suspense>
   );
 }
