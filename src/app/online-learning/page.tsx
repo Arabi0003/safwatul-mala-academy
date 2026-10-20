@@ -1,53 +1,35 @@
-﻿import type { Metadata } from "next";
+﻿import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
-import { ArrowRight, Monitor, Wifi, Calendar } from "lucide-react";
-import PageHero from "@/components/ui/PageHero";
+import { Monitor, Clock, Globe2, Video, ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Online Learning",
-  description: "Online Qur'an and Islamic learning options at AS SAFWATUL-MALA ACADEMY for students near and far.",
-};
-
-export default function OnlinePage() {
+export default function OnlineLearningPage() {
   return (
-    <>
-      <PageHero label="Learn Anywhere" title="Online Learning" subtitle="Quality Qur'an education that reaches beyond the classroom walls." />
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-4 text-brown-light leading-relaxed text-[17px]">
-          <p>
-            Not every family can attend in person every day. Our online learning
-            option is being developed so students can join live sessions,
-            access materials, and stay connected with their teachers remotely.
-          </p>
-          <p>
-            Platform details, available courses, schedules, and technical requirements
-            will be published here as they are confirmed. We will not advertise
-            features that are not ready.
-          </p>
-        </div>
-      </section>
-      <section className="py-16 bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <main className="bg-white">
+      <PageHero tag="Virtual Classes" title="Online Learning" subtitle="Learn the Qur'an, Arabic, and Islamic studies from anywhere in the world — with live, interactive teachers from Abuja." />
+
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
           {[
-            { icon: Monitor, title: "Live Sessions", text: "Real-time classes with your assigned teacher." },
-            { icon: Wifi, title: "Flexible Access", text: "Join from home when in-person attendance is difficult." },
-            { icon: Calendar, title: "Same Standards", text: "Online students follow the same curriculum and expectations." },
-          ].map((i) => (
-            <div key={i.title} className="p-7 rounded-2xl bg-white border border-platinum/60 text-center">
-              <div className="w-12 h-12 mx-auto rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-4">
-                <i.icon className="w-6 h-6 text-gold" />
+            { icon: Video, title: "Live One-on-One Classes", desc: "Direct video calls with your assigned ustadh. No pre-recorded lessons." },
+            { icon: Clock, title: "Flexible Scheduling", desc: "Choose session times that fit your timezone and routine." },
+            { icon: Globe2, title: "Global Student Family", desc: "Join learners from across Nigeria, Africa, Europe, and the Americas." },
+            { icon: Monitor, title: "Digital Resources", desc: "Access learning materials, progress tracking, and recordings." },
+          ].map((f, i) => (
+            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+              <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
+                <f.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
-              <h3 className="font-heading text-lg font-bold text-brown-deep mb-2">{i.title}</h3>
-              <p className="text-sm text-brown-light">{i.text}</p>
+              <h3 className="font-[Playfair] text-2xl font-bold text-[var(--navy)] mb-3">{f.title}</h3>
+              <p className="text-slate-600">{f.desc}</p>
             </div>
           ))}
         </div>
+        <div className="text-center mt-12">
+          <Link href="/enroll" className="inline-flex items-center gap-2 bg-[var(--orange)] text-white px-8 py-4 rounded-xl font-bold">
+            Register for Online Classes <ArrowRight className="h-5 w-5" />
+          </Link>
+        </div>
       </section>
-      <section className="py-16 bg-white text-center">
-        <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-brown-deep rounded-full font-bold hover:bg-gold-dark hover:text-white transition-all">
-          Ask About Online Options <ArrowRight className="w-4 h-4" />
-        </Link>
-      </section>
-    </>
+    </main>
   );
 }

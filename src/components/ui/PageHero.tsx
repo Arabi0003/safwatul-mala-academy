@@ -1,32 +1,34 @@
-﻿import Link from "next/link";
+﻿import { ReactNode } from "react";
 
-interface PageHeroProps {
-  label: string;
-  title: string;
-  subtitle?: string;
-}
-
-export default function PageHero({ label, title, subtitle }: PageHeroProps) {
+export default function PageHero({ 
+  title, 
+  subtitle, 
+  tag,
+  children 
+}: { 
+  title: string; 
+  subtitle?: string; 
+  tag?: string;
+  children?: ReactNode;
+}) {
   return (
-    <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden bg-brown-deep">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,168,76,0.15)_0%,transparent_60%)]" />
-      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.5'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Cpath d='M40 10L70 40L40 70L10 40Z'/%3E%3C/g%3E%3C/svg%3E")` }} />
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-8 h-[1px] bg-gold/40" />
-          <p className="text-gold text-xs tracking-[0.3em] uppercase font-medium">{label}</p>
-          <div className="w-8 h-[1px] bg-gold/40" />
-        </div>
-        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="text-silver-light/70 text-lg max-w-2xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
+    <section className="relative pt-32 pb-20 bg-[var(--navy-dark)] text-white overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--navy-dark)] via-[var(--navy)] to-[var(--navy-dark)]"></div>
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0)`,
+        backgroundSize: "28px 28px"
+      }}></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        {tag && (
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--orange)]/30 bg-[var(--orange)]/10 px-4 py-1.5 mb-6">
+            <span className="h-2 w-2 rounded-full bg-[var(--orange)] animate-pulse"></span>
+            <span className="text-xs font-bold tracking-widest text-[var(--orange-glow)] uppercase">{tag}</span>
+          </div>
         )}
+        <h1 className="font-[Playfair] text-4xl md:text-6xl font-extrabold leading-tight mb-6">{title}</h1>
+        {subtitle && <p className="max-w-3xl mx-auto text-lg text-slate-300 leading-relaxed">{subtitle}</p>}
+        {children}
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
     </section>
   );
 }

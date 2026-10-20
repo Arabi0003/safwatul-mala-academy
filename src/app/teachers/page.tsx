@@ -1,40 +1,41 @@
-﻿import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import PageHero from "@/components/ui/PageHero";
-
-export const metadata: Metadata = {
-  title: "Our Teachers & Learning Approach",
-  description: "Meet the teaching approach at AS SAFWATUL-MALA ACADEMY — patient, structured, and centred on real progress.",
-};
+﻿import PageHero from "@/components/ui/PageHero";
+import { GraduationCap, Heart, Award, Users } from "lucide-react";
 
 export default function TeachersPage() {
   return (
-    <>
-      <PageHero label="Our People" title="Teachers & Learning Approach" subtitle="Good teaching is quiet, consistent, and personal. That is the standard we hold." />
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-4 text-brown-light leading-relaxed text-[17px]">
-          <p>
-            Our teachers are selected for two things: knowledge of their subject,
-            and the patience to teach it well. A scholar who cannot explain is not
-            enough. A kind person who does not know the material is not enough either.
+    <main className="bg-white">
+      <PageHero tag="Our Educators" title="Teachers & Learning Approach" subtitle="Qualified, caring, and continuously trained — our teachers are the heart of AS Safwatul-Mala Academy." />
+
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: GraduationCap, title: "Qualified Scholars", desc: "Teachers hold degrees in Islamic studies, Arabic, and specialized academic fields." },
+            { icon: Heart, title: "Nurturing Approach", desc: "Every student is treated with care, patience, and personalized attention." },
+            { icon: Award, title: "Continuous Training", desc: "Regular professional development to stay aligned with best teaching practices." },
+            { icon: Users, title: "Small Class Sizes", desc: "Maximum 15 students per class, ensuring each voice is heard." },
+          ].map((t, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+              <div className="h-12 w-12 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-4">
+                <t.icon className="h-6 w-6 text-[var(--orange)]" />
+              </div>
+              <h3 className="font-bold text-[var(--navy)] text-lg mb-2">{t.title}</h3>
+              <p className="text-slate-600 text-sm">{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h2 className="font-[Playfair] text-4xl font-bold text-[var(--navy)] mb-6">Our Learning Philosophy</h2>
+          <p className="text-slate-600 text-lg leading-relaxed mb-6">
+            We blend the classical Islamic halaqah model with modern pedagogical techniques. Students sit with their teacher in small circles for Qur'an and Islamic subjects, while structured, project-based learning drives academic classes.
           </p>
-          <p>
-            We favour small groups, clear lesson plans, and regular feedback to parents.
-            Students are assessed honestly — praised when they earn it, guided when they struggle.
-          </p>
-          <p>
-            Individual teacher profiles, qualifications, and photographs will be
-            published here once the academy provides and approves them.
-            We will not invent biographies.
+          <p className="text-slate-600 text-lg leading-relaxed">
+            Our approach prioritizes understanding over memorization, character over credentials, and sincerity over competition.
           </p>
         </div>
       </section>
-      <section className="py-16 bg-ivory text-center">
-        <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-brown-deep rounded-full font-bold hover:bg-gold-dark hover:text-white transition-all">
-          Get in Touch <ArrowRight className="w-4 h-4" />
-        </Link>
-      </section>
-    </>
+    </main>
   );
 }

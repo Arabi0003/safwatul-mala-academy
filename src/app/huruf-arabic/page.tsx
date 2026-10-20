@@ -1,69 +1,34 @@
-﻿import type { Metadata } from "next";
+﻿import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
-import { ArrowRight, Type, BookOpen, MessageCircle, PenTool } from "lucide-react";
-import PageHero from "@/components/ui/PageHero";
+import { Languages, PenTool, MessageCircle, ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Huruf & Arabic Language",
-  description: "Learn Arabic letters (Huruf), reading, writing, and conversational Arabic at AS SAFWATUL-MALA ACADEMY.",
-};
-
-const levels = [
-  { icon: Type, title: "Huruf Foundation", text: "Master all 28 Arabic letters — shapes, sounds, and how they connect in words." },
-  { icon: BookOpen, title: "Reading Fluency", text: "Move from individual letters to full words, sentences, and eventually Qur'anic passages." },
-  { icon: PenTool, title: "Writing Practice", text: "Develop clear Arabic handwriting through guided exercises and regular practice." },
-  { icon: MessageCircle, title: "Spoken Arabic", text: "Build everyday vocabulary and simple conversation skills step by step." },
-];
-
-export default function HurufPage() {
+export default function HurufArabicPage() {
   return (
-    <>
-      <PageHero
-        label="Programme"
-        title="Huruf & Arabic Language"
-        subtitle="From the first letter to confident reading and conversation — a clear path into the Arabic language."
-      />
+    <main className="bg-white">
+      <PageHero tag="Programme" title="Huruf & Arabic Language" subtitle="Master the language of the Qur'an — from the first letter to fluent conversation and classical text comprehension." />
 
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <p className="text-brown-light leading-relaxed text-[17px] mb-4">
-            Many students struggle with the Qur&apos;an simply because they never
-            properly learned the letters. We fix that first.
-          </p>
-          <p className="text-brown-light leading-relaxed text-[17px]">
-            Our Huruf and Arabic programme starts at absolute beginner level
-            and builds steadily. No one is rushed. No one is left behind.
-            Exact course outlines and materials will be confirmed by the academy.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 sm:py-20 bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-brown-deep text-center mb-12">Learning Path</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {levels.map((l) => (
-              <div key={l.title} className="flex gap-5 p-7 rounded-2xl bg-white border border-platinum/60 hover:border-gold-light/40 transition-all">
-                <div className="w-12 h-12 shrink-0 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
-                  <l.icon className="w-6 h-6 text-gold" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-lg font-bold text-brown-deep mb-1">{l.title}</h3>
-                  <p className="text-sm text-brown-light leading-relaxed">{l.text}</p>
-                </div>
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+          {[
+            { icon: PenTool, title: "Huruf (Letters)", desc: "Introduction to Arabic alphabet, phonetics, and basic writing for beginners of all ages." },
+            { icon: Languages, title: "Grammar & Nahw", desc: "Classical Arabic grammar enabling comprehension of Qur'an and Hadith texts." },
+            { icon: MessageCircle, title: "Conversation", desc: "Spoken Arabic for daily use, with modern vocabulary and dialect understanding." },
+          ].map((t, i) => (
+            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+              <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
+                <t.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
-            ))}
-          </div>
+              <h3 className="font-[Playfair] text-2xl font-bold text-[var(--navy)] mb-3">{t.title}</h3>
+              <p className="text-slate-600">{t.desc}</p>
+            </div>
+          ))}
         </div>
-      </section>
-
-      <section className="py-16 bg-white text-center">
-        <div className="max-w-xl mx-auto px-4">
-          <Link href="/admissions" className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-brown-deep rounded-full font-bold hover:bg-gold-dark hover:text-white transition-all">
-            Enrol in Arabic Classes <ArrowRight className="w-4 h-4" />
+        <div className="text-center mt-12">
+          <Link href="/enroll" className="inline-flex items-center gap-2 bg-[var(--orange)] text-white px-8 py-4 rounded-xl font-bold">
+            Enroll in Arabic Program <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>
-    </>
+    </main>
   );
 }
