@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={playfair.variable}>
       <body className="antialiased bg-white text-slate-900 flex flex-col min-h-screen">
-        <Navbar />
+        <Suspense fallback={null}>
+          <Navbar />
+        </Suspense>
         <div className="flex-1">{children}</div>
         <Footer />
       </body>

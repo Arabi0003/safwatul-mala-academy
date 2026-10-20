@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -16,33 +16,54 @@ export default function Navbar() {
   const [desktopDropdown, setDesktopDropdown] = useState(false);
   const pathname = usePathname();
 
-  // Scroll detection
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile drawer on route change
   useEffect(() => {
     setMobileOpen(false);
     setMobileProgOpen(false);
     setDesktopDropdown(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     if (mobileOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
       document.body.style.overflow = "hidden";
     } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
+      if (scrollY) window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     }
     return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  const toggleMobile = useCallback(() => setMobileOpen((p) => !p), []);
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   const programmes = [
     { title: "Qur'an Studies", desc: "Hifz, Tajweed & Qira'at", href: "/quran-studies", icon: BookOpen },
@@ -63,7 +84,6 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
           
-          {/* Brand Logo - Pure Circle */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="relative h-11 w-11 md:h-12 md:w-12 rounded-full bg-white p-0.5 shadow-md border-2 border-[var(--orange)] flex-none overflow-hidden transition-transform group-hover:scale-105">
               <Image 
@@ -84,7 +104,6 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-7 font-medium text-sm">
             <Link 
               href="/" 
@@ -100,7 +119,6 @@ export default function Navbar() {
               About
             </Link>
 
-            {/* Desktop Dropdown */}
             <div 
               className="relative"
               onMouseEnter={() => setDesktopDropdown(true)}
@@ -164,7 +182,6 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Right Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
             <Link 
               href="/portal" 
@@ -181,12 +198,14 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
           <button 
             type="button"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2.5 rounded-xl text-[var(--navy)] bg-slate-100/80 active:bg-slate-200 transition touch-manipulation cursor-pointer"
+            onClick={toggleMobile}
+            onTouchEnd={(e) => { e.preventDefault(); toggleMobile(); }}
+            className="lg:hidden relative z-[110] p-2.5 rounded-xl text-[var(--navy)] bg-slate-100/80 active:bg-slate-200 transition cursor-pointer"
+            style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
             aria-label="Toggle navigation menu"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="h-6 w-6 text-[var(--orange)]" /> : <Menu className="h-6 w-6 text-[var(--navy)]" />}
           </button>
@@ -194,140 +213,148 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MOBILE DRAWER OVERLAY */}
-      <div 
-        className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        {/* Dark Backdrop */}
+      {mobileOpen && (
         <div 
-          className="absolute inset-0 bg-black/60 backdrop-blur-xs" 
-          onClick={() => setMobileOpen(false)}
-        />
-
-        {/* Drawer Panel */}
-        <aside 
-          className={`absolute top-0 left-0 bottom-0 w-[85%] max-w-xs bg-white shadow-2xl flex flex-col justify-between p-6 transition-transform duration-300 ease-in-out ${
-            mobileOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className="fixed top-0 left-0 right-0 bottom-0 z-[100] lg:hidden"
+          style={{ height: "100dvh" }}
         >
-          {/* Header in Drawer */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-            <div className="flex items-center gap-2.5">
-              <div className="relative h-10 w-10 rounded-full bg-white p-0.5 border border-[var(--orange)] overflow-hidden flex-none">
-                <Image src="/safwa.png" alt="Logo" fill className="object-cover rounded-full" />
+          <div 
+            className="absolute top-0 left-0 right-0 bottom-0 bg-black/60"
+            onClick={closeMobile}
+            onTouchEnd={(e) => { e.preventDefault(); closeMobile(); }}
+            aria-hidden="true"
+          />
+
+          <aside 
+            className="absolute top-0 left-0 bottom-0 w-[85%] max-w-xs bg-white shadow-2xl flex flex-col justify-between p-6"
+            style={{ height: "100dvh", overscrollBehavior: "none" }}
+          >
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="relative h-10 w-10 rounded-full bg-white p-0.5 border border-[var(--orange)] overflow-hidden flex-none">
+                  <Image src="/safwa.png" alt="Logo" fill className="object-cover rounded-full" />
+                </div>
+                <div>
+                  <p className="font-[Playfair] font-bold text-[var(--navy)] text-sm leading-tight">AS SAFWATUL-MALA</p>
+                  <p className="text-[9px] font-bold text-[var(--orange)] uppercase tracking-wider">Academy Abuja</p>
+                </div>
               </div>
-              <div>
-                <p className="font-[Playfair] font-bold text-[var(--navy)] text-sm leading-tight">AS SAFWATUL-MALA</p>
-                <p className="text-[9px] font-bold text-[var(--orange)] uppercase tracking-wider">Academy Abuja</p>
-              </div>
-            </div>
-            <button 
-              type="button"
-              onClick={() => setMobileOpen(false)}
-              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex-1 overflow-y-auto py-4 space-y-1 font-medium text-sm text-[var(--navy)]">
-            <Link 
-              href="/" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              Home
-            </Link>
-
-            <Link 
-              href="/about" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/about" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              About Us
-            </Link>
-
-            {/* Mobile Accordion for Programmes */}
-            <div>
               <button 
                 type="button"
-                onClick={() => setMobileProgOpen(!mobileProgOpen)}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-50 transition text-[var(--navy)] font-medium text-left"
+                onClick={closeMobile}
+                onTouchEnd={(e) => { e.preventDefault(); closeMobile(); }}
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800"
+                style={{ touchAction: "manipulation" }}
               >
-                <span>Programmes</span>
-                <ChevronDown className={`h-4 w-4 text-[var(--orange)] transition-transform duration-200 ${mobileProgOpen ? "rotate-180" : ""}`} />
+                <X className="h-5 w-5" />
               </button>
-
-              {mobileProgOpen && (
-                <div className="ml-3 pl-3 border-l-2 border-[var(--orange)]/30 space-y-1 my-1">
-                  {programmes.map((p) => (
-                    <Link
-                      key={p.href}
-                      href={p.href}
-                      className="block px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[var(--orange)] transition"
-                    >
-                      {p.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
             </div>
 
-            <Link 
-              href="/admissions" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/admissions" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              Admissions
-            </Link>
+            <div className="flex-1 overflow-y-auto py-4 space-y-1 font-medium text-sm text-[var(--navy)]" style={{ overscrollBehavior: "contain" }}>
+              <Link 
+                href="/" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                Home
+              </Link>
 
-            <Link 
-              href="/teachers" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/teachers" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              Teachers
-            </Link>
+              <Link 
+                href="/about" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/about" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                About Us
+              </Link>
 
-            <Link 
-              href="/calendar" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/calendar" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              Academic Calendar
-            </Link>
+              <div>
+                <button 
+                  type="button"
+                  onClick={() => setMobileProgOpen(!mobileProgOpen)}
+                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-50 transition text-[var(--navy)] font-medium text-left"
+                  style={{ touchAction: "manipulation" }}
+                >
+                  <span>Programmes</span>
+                  <ChevronDown className={`h-4 w-4 text-[var(--orange)] transition-transform duration-200 ${mobileProgOpen ? "rotate-180" : ""}`} />
+                </button>
 
-            <Link 
-              href="/news" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/news" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              News & Articles
-            </Link>
+                {mobileProgOpen && (
+                  <div className="ml-3 pl-3 border-l-2 border-[var(--orange)]/30 space-y-1 my-1">
+                    {programmes.map((p) => (
+                      <Link
+                        key={p.href}
+                        href={p.href}
+                        onClick={closeMobile}
+                        className="block px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[var(--orange)] transition"
+                      >
+                        {p.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            <Link 
-              href="/contact" 
-              className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/contact" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
-            >
-              Contact Us
-            </Link>
-          </div>
+              <Link 
+                href="/admissions" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/admissions" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                Admissions
+              </Link>
 
-          {/* Drawer Footer Actions */}
-          <div className="pt-4 border-t border-slate-100 flex flex-col gap-2.5">
-            <Link 
-              href="/portal" 
-              className="w-full text-center py-3 rounded-xl border border-[var(--navy)] text-[var(--navy)] font-bold text-xs hover:bg-[var(--navy)] hover:text-white transition"
-            >
-              Portal Access
-            </Link>
-            <Link 
-              href="/enroll" 
-              className="w-full text-center py-3 rounded-xl bg-[var(--orange)] text-white font-bold text-xs shadow-md active:bg-[var(--orange-deep)] transition"
-            >
-              Apply / Enroll Now
-            </Link>
-          </div>
+              <Link 
+                href="/teachers" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/teachers" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                Teachers
+              </Link>
 
-        </aside>
-      </div>
+              <Link 
+                href="/calendar" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/calendar" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                Academic Calendar
+              </Link>
+
+              <Link 
+                href="/news" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/news" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                News & Articles
+              </Link>
+
+              <Link 
+                href="/contact" 
+                onClick={closeMobile}
+                className={`block px-3 py-2.5 rounded-xl transition ${pathname === "/contact" ? "bg-[var(--orange)]/10 text-[var(--orange)] font-bold" : "hover:bg-slate-50"}`}
+              >
+                Contact Us
+              </Link>
+            </div>
+
+            <div className="pt-4 border-t border-slate-100 flex flex-col gap-2.5">
+              <Link 
+                href="/portal" 
+                onClick={closeMobile}
+                className="w-full text-center py-3 rounded-xl border border-[var(--navy)] text-[var(--navy)] font-bold text-xs hover:bg-[var(--navy)] hover:text-white transition"
+              >
+                Portal Access
+              </Link>
+              <Link 
+                href="/enroll" 
+                onClick={closeMobile}
+                className="w-full text-center py-3 rounded-xl bg-[var(--orange)] text-white font-bold text-xs shadow-md active:bg-[var(--orange-deep)] transition"
+              >
+                Apply / Enroll Now
+              </Link>
+            </div>
+
+          </aside>
+        </div>
+      )}
     </>
   );
 }
