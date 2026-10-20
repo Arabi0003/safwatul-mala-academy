@@ -1,0 +1,10 @@
+﻿User-agent: *
+Allow: /
+Disallow: /portal/student
+Disallow: /portal/teacher
+Disallow: /portal/staff
+Disallow: /portal/graduate
+Disallow: /portal/admin
+Disallow: /portal/parent
+
+Sitemap: https://safwatulmalaacademy.online/sitemap.xml
