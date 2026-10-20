@@ -29,7 +29,7 @@ import PortalLogin from "@/components/ui/PortalLogin";
 
 export default function GraduatePortal() {
   const [loggedIn, setLoggedIn] = useState(false);
-  if (!loggedIn) return <PortalLogin role="Graduate" accentColor="var(--gold)" accentBg="#FFFBEB" onLogin={() => setLoggedIn(true)} />;
+  if (!loggedIn) return <PortalLogin role="Graduate" variant="graduate" accentColor="var(--gold)" accentBg="#FFFBEB" onLogin={() => setLoggedIn(true)} />;
 
   return (
     <div className="min-h-screen bg-[var(--cream)]">
@@ -86,3 +86,4 @@ export default function GraduatePortal() {
     </div>
   );
 }
+

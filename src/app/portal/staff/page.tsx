@@ -30,7 +30,7 @@ import PortalLogin from "@/components/ui/PortalLogin";
 
 export default function StaffPortal() {
   const [loggedIn, setLoggedIn] = useState(false);
-  if (!loggedIn) return <PortalLogin role="Staff" accentColor="var(--navy)" accentBg="#F1F5F9" onLogin={() => setLoggedIn(true)} />;
+  if (!loggedIn) return <PortalLogin role="Staff" variant="staff" accentColor="var(--navy)" accentBg="#F1F5F9" onLogin={() => setLoggedIn(true)} />;
 
   return (
     <div className="min-h-screen bg-[var(--cream)]">
@@ -87,3 +87,4 @@ export default function StaffPortal() {
     </div>
   );
 }
+
