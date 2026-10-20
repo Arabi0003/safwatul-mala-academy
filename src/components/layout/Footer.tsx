@@ -84,7 +84,7 @@ export default function Footer() {
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[var(--orange-glow)]">Stay Connected</span>
             <h3 className="font-[Playfair] text-2xl md:text-3xl font-bold mt-1 text-white">
-              Subscribe to Academy Announcements and News
+              Subscribe to Academy Announcements {"\u0026"} News
             </h3>
             <p className="text-slate-400 text-sm mt-2">
               Receive updates regarding admissions, academic calendar events, and spiritual articles.
@@ -232,3 +232,4 @@ export default function Footer() {
     </footer>
   );
 }
+
