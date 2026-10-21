@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 import { SignJWT } from 'jose';
 
-const prisma = new PrismaClient();
-const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback_secret');
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback_secret_key_2025');
 
 export async function POST(req: Request) {
   try {
     const { identifier, password, role } = await req.json();
+
+    if (!identifier || !password) {
+      return NextResponse.json({ error: 'Please enter your ID and password.' }, { status: 400 });
+    }
 
     const user = await prisma.user.findFirst({
       where: {
@@ -20,10 +23,14 @@ export async function POST(req: Request) {
       }
     });
 
-    if (!user) return NextResponse.json({ error: 'Account not found. Check your ID.' }, { status: 404 });
+    if (!user) {
+      return NextResponse.json({ error: 'Account not found. Check your ID.' }, { status: 404 });
+    }
 
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) return NextResponse.json({ error: 'Invalid password.' }, { status: 401 });
+    if (!isValid) {
+      return NextResponse.json({ error: 'Invalid password.' }, { status: 401 });
+    }
 
     const token = await new SignJWT({ id: user.id, role: user.role, name: user.name })
       .setProtectedHeader({ alg: 'HS256' })
@@ -43,7 +50,8 @@ export async function POST(req: Request) {
     });
 
     return res;
-  } catch (error) {
-    return NextResponse.json({ error: 'Server error during authentication.' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Database/Auth Error:', error);
+    return NextResponse.json({ error: error?.message || 'Database connection error.' }, { status: 500 });
   }
 }
