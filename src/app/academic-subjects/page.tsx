@@ -4,7 +4,7 @@ import { Beaker, Calculator, Globe, Palette, ArrowRight } from "lucide-react";
 
 export default function AcademicSubjectsPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Programme" title="Academic Subjects" subtitle="A comprehensive conventional curriculum covering STEM, Languages, Humanities, and Arts — meeting national and international standards." />
 
       <section className="py-24">

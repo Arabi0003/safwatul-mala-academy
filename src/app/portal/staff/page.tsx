@@ -1,135 +1,85 @@
 'use client';
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { ShieldCheck, ArrowRight, UserCircle } from 'lucide-react';
-import PageHero from '@/components/ui/PageHero';
-import Image from 'next/image';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Lock, User, AlertCircle, ArrowLeft } from "lucide-react";
 
-export default function StaffPortal() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState('teacher');
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+const ROLES = ["SUPERADMIN", "ADMIN", "SECRETARY", "TEACHER"] as const;
+
+export default function StaffLoginPage() {
   const router = useRouter();
+  const [role, setRole] = useState<(typeof ROLES)[number]>("SUPERADMIN");
+  const [username, setUsername] = useState("ASM/ADMIN/01");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [shake, setShake] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password, role })
-      });
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-      
-      router.push(data.url);
-    } catch (err: any) {
-      setError(err.message);
-      setIsLoading(false);
-    }
+  const fail = (m: string) => {
+    setError(m);
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([150, 80, 150, 80, 250]);
+    setShake(true);
+    setTimeout(() => setShake(false), 600);
   };
 
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: username.trim(), password, portalType: "STAFF", role }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+      const r = String(data.user.role || "admin").toLowerCase();
+      router.push("/dashboard/" + r);
+      router.refresh();
+    } catch (err: unknown) {
+      fail(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <main className="min-h-screen bg-slate-50">
-      <PageHero 
-        title="Staff & Admin Portal" 
-        subtitle="Unified gateway for Super Admins, Administrators, Secretaries, and Teachers."
-      />
-
-      <section className="py-20 px-6 -mt-32 relative z-10">
-        <div className="container mx-auto max-w-lg">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="ultra-glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl border-white/60 bg-white/80 relative overflow-hidden"
-          >
-            {/* Background Watermark Logo */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none z-0">
-              <Image src="/safwa.png" alt="watermark" width={400} height={400} className="object-cover" />
-            </div>
-
-            <div className="relative z-10">
-              {/* Top Centered Logo */}
-              <div className="flex justify-center mb-8">
-                <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-amber-500 overflow-hidden relative">
-                  <Image src="/safwa.png" alt="Academy Logo" fill className="object-cover p-1" />
-                </div>
-              </div>
-
-              <h2 className="text-blue-950 text-center mb-2 text-3xl">System Login</h2>
-              <p className="text-slate-600 font-medium text-center mb-8">
-                Select your designated role to proceed.
-              </p>
-
-              <form onSubmit={handleLogin} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Access Role</label>
-                  <div className="relative">
-                    <select 
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                      className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-sm text-slate-900 font-bold appearance-none cursor-pointer relative z-10 bg-transparent"
-                    >
-                      <option value="teacher">Teacher</option>
-                      <option value="secretary">Secretary</option>
-                      <option value="admin">Admin</option>
-                      <option value="superadmin">Super Admin</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-amber-500 z-0">
-                      <UserCircle size={24} />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">ID / Email</label>
-                  <input 
-                    type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Enter your ID (e.g. ASM/ADMIN/01)"
-                    className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Password</label>
-                  <input 
-                    type="password" 
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
-                    className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-end relative z-10">
-                  <button type="button" className="text-amber-600 font-bold hover:underline text-sm hover:text-amber-700">Forgot Password?</button>
-                </div>
-
-                <button 
-                  disabled={isLoading}
-                  className={`w-full text-white font-bold py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 group text-xl relative z-10 ${
-                    role === 'superadmin' ? 'bg-slate-900 hover:bg-slate-800 shadow-slate-900/30' : 'bg-blue-950 hover:bg-amber-600 shadow-blue-900/20'
-                  }`}
-                >
-                  {isLoading ? (
-                    <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      Sign In Securely <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                    </>
-                  )}
-                </button>
-              {error && <p className="text-red-500 text-center font-bold mt-4">{error}</p>}</form>
-            </div>
-          </motion.div>
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 flex flex-col justify-center items-center p-4 text-slate-900">
+      <div className="w-full max-w-md">
+        <div className="mb-6 flex justify-between items-center">
+          <Link href="/" className="text-sm font-semibold text-emerald-800 bg-white/80 px-3 py-1.5 rounded-full border border-emerald-200 inline-flex items-center gap-1">
+            <ArrowLeft className="w-4 h-4" /> Home
+          </Link>
+          <span className="text-xs font-bold bg-emerald-700 text-white px-3 py-1 rounded-full">Staff Portal</span>
         </div>
-      </section>
+        <div className={"bg-white/90 backdrop-blur-xl border border-emerald-200 shadow-2xl rounded-2xl p-8 " + (shake ? "animate-shake border-red-500 ring-4 ring-red-500/20" : "")}>
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative w-20 h-20 mb-3"><Image src="/logo.png" alt="Logo" fill className="object-contain" priority /></div>
+            <h1 className="text-2xl font-black text-slate-900">Staff Login</h1>
+            <p className="text-xs text-emerald-800 mt-1">Super Admin works with role SUPERADMIN</p>
+          </div>
+          {error && <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 text-xs rounded-xl flex gap-2"><AlertCircle className="w-4 h-4 shrink-0" />{error}</div>}
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-2">
+              {ROLES.map((r) => (
+                <button key={r} type="button" onClick={() => setRole(r)} className={"py-2 text-xs font-bold rounded-lg border " + (role === r ? "bg-emerald-700 text-white border-emerald-700" : "bg-emerald-50 text-slate-700 border-emerald-200")}>{r}</button>
+              ))}
+            </div>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-700" />
+              <input className="w-full pl-9 py-2.5 border border-emerald-200 rounded-xl bg-emerald-50/40 text-sm" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="ASM/ADMIN/01" required />
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-700" />
+              <input type="password" className="w-full pl-9 py-2.5 border border-emerald-200 rounded-xl bg-emerald-50/40 text-sm" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <button disabled={loading} className="w-full py-3 bg-emerald-700 text-white font-bold rounded-xl text-sm disabled:opacity-50">{loading ? "..." : "Sign In"}</button>
+          </form>
+          <p className="mt-3 text-[10px] text-center text-slate-500">ASM/ADMIN/01 · password123 · SUPERADMIN</p>
+        </div>
+      </div>
     </main>
   );
 }

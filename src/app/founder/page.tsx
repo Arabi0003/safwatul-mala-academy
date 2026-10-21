@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function FounderPage() {
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 min-h-screen bg-slate-50">
       <PageHero 
         title="Meet Our Founder" 
         subtitle="A vision built on faith, integrity, and excellence."

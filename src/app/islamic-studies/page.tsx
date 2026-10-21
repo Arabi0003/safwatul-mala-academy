@@ -4,7 +4,7 @@ import { Scroll, Sun, Users, ArrowRight } from "lucide-react";
 
 export default function IslamicStudiesPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Programme" title="Islamic Studies" subtitle="Fiqh, Aqeedah, Seerah, and Hadith — building a complete understanding of the Deen based on the Qur'an and Sunnah." />
 
       <section className="py-24">

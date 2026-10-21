@@ -4,7 +4,7 @@ import { CheckCircle, FileText, Clock, Users, ArrowRight, Phone } from "lucide-r
 
 export default function AdmissionsPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero 
         tag="Enrollment Open"
         title="Admissions 2025/2026"

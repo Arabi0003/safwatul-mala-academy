@@ -1,130 +1,72 @@
 'use client';
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, GraduationCap } from 'lucide-react';
-import PageHero from '@/components/ui/PageHero';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Lock, UserCheck, AlertCircle, ArrowLeft } from "lucide-react";
 
-export default function StudentPortal() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function StudentLoginPage() {
   const router = useRouter();
+  const [studentId, setStudentId] = useState("ASM/2024/0001");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [shake, setShake] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password, role: 'student' })
-      });
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-      
-      router.push(data.url);
-    } catch (err: any) {
-      setError(err.message);
-      setIsLoading(false);
-    }
+  const fail = (m: string) => {
+    setError(m);
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([150, 80, 150, 80, 250]);
+    setShake(true);
+    setTimeout(() => setShake(false), 600);
   };
 
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: studentId.trim(), password, portalType: "STUDENT" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+      router.push("/dashboard/student");
+      router.refresh();
+    } catch (err: unknown) {
+      fail(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <main className="min-h-screen bg-slate-50">
-      <PageHero 
-        title="Student Portal" 
-        subtitle="Secure access for students to view grades, assignments, and curriculum."
-      />
-
-      <section className="py-20 px-6 -mt-32 relative z-10">
-        <div className="container mx-auto max-w-lg">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="ultra-glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl border-white/60 bg-white/80 relative overflow-hidden"
-          >
-            {/* Background Watermark Logo */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none z-0">
-              <Image src="/safwa.png" alt="watermark" width={400} height={400} className="object-cover" />
-            </div>
-
-            <div className="relative z-10">
-              {/* Top Centered Logo */}
-              <div className="flex justify-center mb-8">
-                <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-amber-500 overflow-hidden relative">
-                  <Image src="/safwa.png" alt="Academy Logo" fill className="object-cover p-1" priority />
-                </div>
-              </div>
-
-              <h2 className="text-blue-950 text-center mb-2 text-3xl font-bold">Student Login</h2>
-              <p className="text-slate-600 font-medium text-center mb-8">
-                Enter your Student ID to access your dashboard.
-              </p>
-
-              <form onSubmit={handleLogin} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Portal Role</label>
-                  <div className="relative">
-                    <div className="w-full px-6 py-4 rounded-2xl bg-slate-100 border-2 border-slate-200 text-lg shadow-inner text-slate-800 font-bold flex items-center justify-between">
-                      <span className="flex items-center gap-2"><GraduationCap size={22} className="text-amber-500" /> STUDENT</span>
-                      <span className="text-xs bg-amber-500 text-white px-3 py-1 rounded-full font-extrabold uppercase">Active</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Student ID</label>
-                  <input 
-                    type="text" 
-                    value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="ASM/2024/0001"
-                    className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Password</label>
-                  <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-end relative z-10">
-                  <button type="button" className="text-amber-600 font-bold hover:underline text-sm hover:text-amber-700">Forgot Password?</button>
-                </div>
-
-                <button 
-                  disabled={isLoading}
-                  className="w-full text-white font-bold py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 group text-xl relative z-10 bg-blue-950 hover:bg-amber-600 shadow-blue-900/20"
-                >
-                  {isLoading ? (
-                    <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      Sign In Securely <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                    </>
-                  )}
-                </button>
-
-                {error && <p className="text-red-500 text-center font-bold mt-4">{error}</p>}
-              </form>
-            </div>
-          </motion.div>
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 flex flex-col justify-center items-center p-4 text-slate-900">
+      <div className="w-full max-w-md">
+        <div className="mb-6 flex justify-between">
+          <Link href="/" className="text-sm font-semibold text-emerald-800 bg-white/80 px-3 py-1.5 rounded-full border border-emerald-200 inline-flex items-center gap-1"><ArrowLeft className="w-4 h-4" /> Home</Link>
+          <span className="text-xs font-bold bg-orange-600 text-white px-3 py-1 rounded-full">Student</span>
         </div>
-      </section>
+        <div className={"bg-white/90 border border-emerald-200 shadow-2xl rounded-2xl p-8 " + (shake ? "animate-shake border-red-500" : "")}>
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative w-20 h-20 mb-3"><Image src="/logo.png" alt="Logo" fill className="object-contain" priority /></div>
+            <h1 className="text-2xl font-black">Student Login</h1>
+          </div>
+          {error && <div className="mb-4 p-3 bg-red-50 border border-red-300 text-red-700 text-xs rounded-xl flex gap-2"><AlertCircle className="w-4 h-4" />{error}</div>}
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="relative">
+              <UserCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-700" />
+              <input className="w-full pl-9 py-2.5 border border-emerald-200 rounded-xl bg-emerald-50/40 text-sm" value={studentId} onChange={(e) => setStudentId(e.target.value)} required />
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-700" />
+              <input type="password" className="w-full pl-9 py-2.5 border border-emerald-200 rounded-xl bg-emerald-50/40 text-sm" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <button disabled={loading} className="w-full py-3 bg-orange-600 text-white font-bold rounded-xl text-sm disabled:opacity-50">{loading ? "..." : "Sign In"}</button>
+          </form>
+        </div>
+      </div>
     </main>
   );
 }

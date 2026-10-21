@@ -1,57 +1,77 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcrypt';
-import { SignJWT } from 'jose';
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { SignJWT } from "jose";
+import { prisma } from "@/lib/prisma";
 
-const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback_secret_key_2025');
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "safwatul-mala-academy-jwt-secret-key-2024");
+const STAFF = ["SUPERADMIN", "ADMIN", "SECRETARY", "TEACHER"] as const;
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { identifier, password, role } = await req.json();
+    const body = await req.json();
+    const id = String(body.id || body.username || body.staffId || body.studentId || "").trim();
+    const password = String(body.password || "");
+    const portalType = String(body.portalType || "STAFF").toUpperCase();
+    let selectedRole = body.role ? String(body.role).toUpperCase().replace("SUPER_ADMIN", "SUPERADMIN") : null;
 
-    if (!identifier || !password) {
-      return NextResponse.json({ error: 'Please enter your ID and password.' }, { status: 400 });
+    if (!id || !password) {
+      return NextResponse.json({ error: "ID and password are required." }, { status: 400 });
     }
 
     const user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { staffId: identifier },
-          { studentId: identifier },
-          { email: identifier }
-        ]
-      }
+        OR: [{ staffId: id }, { studentId: id }, { email: id }],
+      },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'Account not found. Check your ID.' }, { status: 404 });
+    if (!user || !user.isActive) {
+      return NextResponse.json({ error: "Invalid credentials or account disabled." }, { status: 401 });
     }
 
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
-      return NextResponse.json({ error: 'Invalid password.' }, { status: 401 });
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) {
+      return NextResponse.json({ error: "Invalid credentials. Check ID and password." }, { status: 401 });
     }
 
-    const token = await new SignJWT({ id: user.id, role: user.role, name: user.name })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setExpirationTime('12h')
+    if (portalType === "STUDENT") {
+      if (user.role !== "STUDENT" && user.role !== "GRADUATE") {
+        return NextResponse.json({ error: "Not a student account." }, { status: 403 });
+      }
+    } else {
+      if (!(STAFF as readonly string[]).includes(user.role)) {
+        return NextResponse.json({ error: "This account cannot use Staff Portal." }, { status: 403 });
+      }
+      if (selectedRole && selectedRole !== user.role) {
+        return NextResponse.json({ error: "Role mismatch. Account is " + user.role + "." }, { status: 403 });
+      }
+    }
+
+    const token = await new SignJWT({
+      userId: user.id,
+      role: user.role,
+      name: user.name,
+      staffId: user.staffId,
+      studentId: user.studentId,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("24h")
       .sign(SECRET);
 
-    const res = NextResponse.json({ 
-      success: true, 
-      url: `/dashboard/${user.role.toLowerCase()}` 
+    const res = NextResponse.json({
+      success: true,
+      user: { id: user.id, name: user.name, role: user.role, staffId: user.staffId, studentId: user.studentId },
     });
-    
-    res.cookies.set('auth_token', token, { 
-      httpOnly: true, 
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'lax', 
-      path: '/' 
+    res.cookies.set("auth-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24,
     });
-
     return res;
-  } catch (error: any) {
-    console.error('Database/Auth Error:', error);
-    return NextResponse.json({ error: error?.message || 'Database connection error.' }, { status: 500 });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Server login error." }, { status: 500 });
   }
 }

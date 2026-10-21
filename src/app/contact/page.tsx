@@ -10,7 +10,7 @@ export default function ContactPage() {
   const phoneDisplay = typeof academy.phone === "string" ? academy.phone : academy.phone.formatted;
 
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero 
         tag="Get in Touch" 
         title="Contact AS Safwatul-Mala" 

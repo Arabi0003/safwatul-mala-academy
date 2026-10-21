@@ -3,7 +3,7 @@ import { BookOpen, Users, Award, Heart, Target, Compass } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero 
         tag="Who We Are"
         title="A Legacy of Qur'anic Light & Academic Excellence"

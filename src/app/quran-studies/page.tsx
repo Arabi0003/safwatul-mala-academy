@@ -4,7 +4,7 @@ import { BookOpen, Mic, Award, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function QuranStudiesPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Programme" title="Qur'an Studies" subtitle="Rooted in Tajweed, nurtured through Hifz — our comprehensive Qur'an program develops reciters and memorizers of the Book of Allah." />
 
       <section className="py-24">

@@ -50,4 +50,4 @@
 .hover-card-anim:hover {
   transform: translateY(-8px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
+}\n@keyframes shake{0%,100%{transform:translateX(0)}15%,45%,75%{transform:translateX(-12px)}30%,60%,90%{transform:translateX(12px)}}.animate-shake{animation:shake .5s both}\n

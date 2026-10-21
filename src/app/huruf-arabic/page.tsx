@@ -4,7 +4,7 @@ import { Languages, PenTool, MessageCircle, ArrowRight } from "lucide-react";
 
 export default function HurufArabicPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Programme" title="Huruf & Arabic Language" subtitle="Master the language of the Qur'an — from the first letter to fluent conversation and classical text comprehension." />
 
       <section className="py-24">

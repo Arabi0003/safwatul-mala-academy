@@ -14,7 +14,7 @@ const portals = [
 
 export default function PortalPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Secure Access" title="Portal Access" subtitle="Dedicated portals for every member of the Safwatul-Mala family." />
 
       <section className="py-20">

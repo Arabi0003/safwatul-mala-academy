@@ -4,7 +4,7 @@ import { Monitor, Clock, Globe2, Video, ArrowRight } from "lucide-react";
 
 export default function OnlineLearningPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Virtual Classes" title="Online Learning" subtitle="Learn the Qur'an, Arabic, and Islamic studies from anywhere in the world — with live, interactive teachers from Abuja." />
 
       <section className="py-24">

@@ -21,7 +21,7 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Legal" title="Terms & Conditions" subtitle="Effective: January 2025 — Please read carefully before enrollment." />
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-6">

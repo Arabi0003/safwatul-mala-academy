@@ -10,7 +10,7 @@ export default function NewsPage() {
   ];
 
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Resources" title="News, Articles & Reflections" subtitle="Insights, announcements, and beneficial knowledge from the Academy." />
 
       <section className="py-24">

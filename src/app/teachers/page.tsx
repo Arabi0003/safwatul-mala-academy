@@ -3,7 +3,7 @@ import { GraduationCap, Heart, Award, Users } from "lucide-react";
 
 export default function TeachersPage() {
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Our Educators" title="Teachers & Learning Approach" subtitle="Qualified, caring, and continuously trained — our teachers are the heart of AS Safwatul-Mala Academy." />
 
       <section className="py-24">

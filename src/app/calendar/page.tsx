@@ -10,7 +10,7 @@ export default function CalendarPage() {
     { date: "Jan 15, 2026", title: "Second Term Resumption", type: "Academic" },
   ];
   return (
-    <main className="bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
       <PageHero tag="Stay Informed" title="Calendar & Announcements" subtitle="Keep track of important dates, events, and updates from AS Safwatul-Mala Academy." />
       
       <section className="py-24">
