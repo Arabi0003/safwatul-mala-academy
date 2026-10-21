@@ -10,6 +10,7 @@
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "bcrypt": "^6.0.0",
     "cookies-next": "^6.1.1",
     "framer-motion": "^14.4.0",
@@ -25,7 +26,6 @@
     "react-hook-form": "^7.90.0"
   },
   "devDependencies": {
-    "@prisma/client": "^7.10.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.23.1",
@@ -33,7 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
-    "prisma": "^8.0.0-rc.24",
+    "prisma": "^6.19.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
