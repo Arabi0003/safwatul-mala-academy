@@ -1,17 +1,39 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { ShieldCheck, ArrowRight, UserCircle } from 'lucide-react';
 import PageHero from '@/components/ui/PageHero';
 import Image from 'next/image';
 
 export default function StaffPortal() {
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState('teacher');
+  const role = 'student';
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
+    
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password, role })
+      });
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      
+      router.push(data.url);
+    } catch (err: any) {
+      setError(err.message);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,14 +71,7 @@ export default function StaffPortal() {
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Portal Role</label>
-                  <input type="text" placeholder="ASM/2024/0000" className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10" disabled value="STUDENT" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">ID / Email</label>
-                  <input 
-                    type="text" 
-                    placeholder="Enter your credential..."
+                  <input type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Enter Student ID (e.g. ASM/2024/0001)"
                     className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
                     required
                   />
@@ -66,7 +81,7 @@ export default function StaffPortal() {
                   <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Password</label>
                   <input 
                     type="password" 
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
                     className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
                     required
                   />
@@ -90,7 +105,7 @@ export default function StaffPortal() {
                     </>
                   )}
                 </button>
-              </form>
+              {error && <p className="text-red-500 text-center font-bold mt-4">{error}</p>}</form>
             </div>
           </motion.div>
         </div>
