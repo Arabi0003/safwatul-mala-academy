@@ -1,4 +1,4 @@
-import PageHero from "@/components/ui/PageHero";
+﻿import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
 import { academy } from "@/config/academy";
 
@@ -22,12 +22,12 @@ const sections = [
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
-      <PageHero tag="Legal" title="Terms & Conditions" subtitle="Effective: January 2025 — Please read carefully before enrollment." />
+      <PageHero tag="Legal" title="Terms & Conditions" subtitle="Effective: January 2025 â€” Please read carefully before enrollment." />
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-6">
-          <div className="p-8 bg-slate-50 rounded-2xl border border-slate-200 mb-10">
+          <div className="p-8 bg-emerald-50 rounded-2xl border border-slate-200 mb-10">
             <p className="font-[Playfair] italic text-lg text-[var(--navy)]">"O you who have believed, fulfil all contracts."</p>
-            <p className="text-right text-xs uppercase tracking-widest text-[var(--orange)] mt-2 font-bold">— Qur'an 5:1</p>
+            <p className="text-right text-xs uppercase tracking-widest text-[var(--orange)] mt-2 font-bold">â€” Qur'an 5:1</p>
           </div>
           <div className="space-y-8">
             {sections.map((s, i) => (
@@ -42,7 +42,7 @@ export default function TermsPage() {
           </div>
           <div className="text-center mt-12">
             <Link href="/" className="inline-flex items-center gap-2 border border-[var(--navy)] text-[var(--navy)] px-6 py-3 rounded-xl font-bold hover:bg-[var(--navy)] hover:text-white transition">
-              ← Return to Home
+              â† Return to Home
             </Link>
           </div>
         </div>

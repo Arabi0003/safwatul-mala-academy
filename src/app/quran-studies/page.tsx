@@ -14,7 +14,7 @@ export default function QuranStudiesPage() {
             { icon: Mic, title: "Tajweed Mastery", desc: "In-depth study of the rules of Qur'anic recitation under qualified ustadhs." },
             { icon: Award, title: "Hifz (Memorization)", desc: "Structured memorization program leading to full Hifz with sanad certification." },
           ].map((t, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <t.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
@@ -25,7 +25,7 @@ export default function QuranStudiesPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-emerald-50">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="font-[Playfair] text-3xl font-bold text-[var(--navy)] text-center mb-12">What You'll Experience</h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -53,3 +53,4 @@ export default function QuranStudiesPage() {
     </main>
   );
 }
+

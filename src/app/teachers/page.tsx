@@ -14,7 +14,7 @@ export default function TeachersPage() {
             { icon: Award, title: "Continuous Training", desc: "Regular professional development to stay aligned with best teaching practices." },
             { icon: Users, title: "Small Class Sizes", desc: "Maximum 15 students per class, ensuring each voice is heard." },
           ].map((t, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-6 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-12 w-12 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-4">
                 <t.icon className="h-6 w-6 text-[var(--orange)]" />
               </div>
@@ -25,7 +25,7 @@ export default function TeachersPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-emerald-50">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="font-[Playfair] text-4xl font-bold text-[var(--navy)] mb-6">Our Learning Philosophy</h2>
           <p className="text-slate-600 text-lg leading-relaxed mb-6">
@@ -39,3 +39,4 @@ export default function TeachersPage() {
     </main>
   );
 }
+

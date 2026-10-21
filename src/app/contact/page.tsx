@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import PageHero from "@/components/ui/PageHero";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
@@ -26,7 +26,7 @@ export default function ContactPage() {
               { icon: Mail, title: "Email Us", info: academy.emails.join(" | ") },
               { icon: Clock, title: "Office Hours", info: "Mon - Fri: 8am - 4pm | Sat: 9am - 1pm" },
             ].map((item, i) => (
-              <div key={i} className="p-6 bg-slate-50 rounded-2xl border border-slate-200 flex gap-4">
+              <div key={i} className="p-6 bg-emerald-50 rounded-2xl border border-slate-200 flex gap-4">
                 <div className="h-12 w-12 rounded-xl bg-[var(--orange)]/10 flex-none flex items-center justify-center">
                   <item.icon className="h-6 w-6 text-[var(--orange)]" />
                 </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
@@ -75,7 +75,7 @@ export default function HeroVideo() {
         </h1>
 
         <p className="mb-10 max-w-2xl text-lg font-medium leading-relaxed text-slate-100 md:text-xl drop-shadow-lg">
-          Excellence in Qur&apos;an education, Arabic, and Islamic learning — nurturing minds with
+          Excellence in Qur&apos;an education, Arabic, and Islamic learning â€” nurturing minds with
           faith, discipline, and academic strength.
         </p>
 

@@ -15,7 +15,7 @@ export default function OnlineLearningPage() {
             { icon: Globe2, title: "Global Student Family", desc: "Join learners from across Nigeria, Africa, Europe, and the Americas." },
             { icon: Monitor, title: "Digital Resources", desc: "Access learning materials, progress tracking, and recordings." },
           ].map((f, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <f.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
@@ -33,3 +33,4 @@ export default function OnlineLearningPage() {
     </main>
   );
 }
+

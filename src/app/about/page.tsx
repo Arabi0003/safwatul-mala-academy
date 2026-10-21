@@ -34,7 +34,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-emerald-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="text-[var(--orange)] font-bold text-xs tracking-widest uppercase">What Drives Us</span>
@@ -76,3 +76,4 @@ export default function AboutPage() {
     </main>
   );
 }
+

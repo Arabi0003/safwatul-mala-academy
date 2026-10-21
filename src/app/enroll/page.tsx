@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ export default function EnrollPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 px-6">
+    <div className="min-h-screen bg-emerald-50 pt-28 pb-20 px-6">
       <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
         <div className="bg-[var(--navy-dark)] p-8 text-center text-white relative">
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--navy-dark)] to-[var(--navy)]"></div>
@@ -53,7 +53,7 @@ export default function EnrollPage() {
           )}
           {step === 2 && (
             <form onSubmit={submitForm} className="space-y-6">
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+              <div className="bg-emerald-50 p-4 rounded-xl border border-slate-200 mb-6">
                 <p className="text-xs text-slate-500 uppercase font-bold">Selected Programme</p>
                 <p className="text-[var(--navy)] font-bold">{formData.program}</p>
               </div>
@@ -81,3 +81,4 @@ export default function EnrollPage() {
     </div>
   );
 }
+

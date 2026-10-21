@@ -18,7 +18,7 @@ export default function CalendarPage() {
           <h2 className="font-[Playfair] text-3xl font-bold text-[var(--navy)] mb-10 text-center">Upcoming Events</h2>
           <div className="space-y-4">
             {events.map((e, i) => (
-              <div key={i} className="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-[var(--orange)] transition">
+              <div key={i} className="flex items-center gap-6 p-6 bg-emerald-50 rounded-2xl border border-slate-200 hover:border-[var(--orange)] transition">
                 <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center flex-none">
                   <Calendar className="h-6 w-6 text-[var(--orange)]" />
                 </div>
@@ -35,3 +35,4 @@ export default function CalendarPage() {
     </main>
   );
 }
+

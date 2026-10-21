@@ -1,10 +1,30 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @layer base {
   :root {
-    --color-primary: #1E3A8A;
-    --color-secondary: #F59E0B;
-    --color-accent: #EA580C;
+    /* === EMERALD THEME (replaces navy/blue/amber) === */
+    --color-primary: #047857;
+    --color-secondary: #14B8A6;
+    --color-accent: #059669;
+
+    /* Legacy variable names → emerald values (keeps components working) */
+    --navy-dark: #022c22;
+    --navy: #064e3b;
+    --ocean: #047857;
+    --sky: #059669;
+    --sky-light: #D1FAE5;
+    --orange: #0D9488;
+    --orange-soft: #14B8A6;
+    --orange-glow: #2DD4BF;
+    --orange-deep: #0F766E;
+    --gold: #10B981;
+    --gold-soft: #6EE7B7;
+    --cream: #ECFDF5;
+    --pearl: #D1FAE5;
+    --ink: #022c22;
+    --ink-soft: #064e3b;
+    --ink-muted: #047857;
+
     --font-serif: "Playfair Display", Georgia, serif;
     --font-sans: "Calibri", "ui-sans-serif", "system-ui", sans-serif;
   }
@@ -12,7 +32,7 @@
   body {
     font-family: var(--font-sans);
     color: #0f172a;
-    background-color: #f8fafc;
+    background-color: #ECFDF5;
     line-height: 1.625;
     font-size: 18px;
   }
@@ -25,23 +45,23 @@
 
   h2 {
     font-size: clamp(28px, 4vw, 32px) !important;
-    color: #1e3a8a;
+    color: #064e3b;
   }
 }
 
-/* Frosted Ultra-Glassmorphism */
+/* Frosted Ultra-Glassmorphism (emerald tint) */
 .ultra-glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(236, 253, 245, 0.78);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(167, 243, 208, 0.5);
 }
 
 .ultra-glass-dark {
-  background: rgba(15, 23, 42, 0.82);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 44, 34, 0.85);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(110, 231, 183, 0.15);
 }
 
 .hover-card-anim {
@@ -49,5 +69,14 @@
 }
 .hover-card-anim:hover {
   transform: translateY(-8px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}\n@keyframes shake{0%,100%{transform:translateX(0)}15%,45%,75%{transform:translateX(-12px)}30%,60%,90%{transform:translateX(12px)}}.animate-shake{animation:shake .5s both}\n
+  box-shadow: 0 25px 50px -12px rgba(4, 120, 87, 0.2);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-12px); }
+  30%, 60%, 90% { transform: translateX(12px); }
+}
+.animate-shake {
+  animation: shake 0.5s both;
+}

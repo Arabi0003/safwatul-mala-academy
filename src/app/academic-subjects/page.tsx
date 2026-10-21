@@ -15,7 +15,7 @@ export default function AcademicSubjectsPage() {
             { icon: Globe, title: "Humanities", desc: "History, Geography, Civics, and Social Studies." },
             { icon: Palette, title: "Languages & Arts", desc: "English, French, Literature, and Creative Arts." },
           ].map((t, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-6 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-12 w-12 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-4">
                 <t.icon className="h-6 w-6 text-[var(--orange)]" />
               </div>
@@ -33,3 +33,4 @@ export default function AcademicSubjectsPage() {
     </main>
   );
 }
+

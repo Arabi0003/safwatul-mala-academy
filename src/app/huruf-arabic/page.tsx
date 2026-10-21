@@ -14,7 +14,7 @@ export default function HurufArabicPage() {
             { icon: Languages, title: "Grammar & Nahw", desc: "Classical Arabic grammar enabling comprehension of Qur'an and Hadith texts." },
             { icon: MessageCircle, title: "Conversation", desc: "Spoken Arabic for daily use, with modern vocabulary and dialect understanding." },
           ].map((t, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <t.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
@@ -32,3 +32,4 @@ export default function HurufArabicPage() {
     </main>
   );
 }
+

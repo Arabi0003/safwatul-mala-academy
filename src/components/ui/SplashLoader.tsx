@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -45,7 +45,7 @@ export default function SplashLoader({ children, duration = 4500 }: { children: 
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-slate-200 via-white to-slate-100"
           >
             {/* Orange & Green Glow Accents */}
-            <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-teal-500/20 blur-3xl" />
             <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full bg-green-500/15 blur-3xl" />
 
             <motion.div
@@ -54,7 +54,7 @@ export default function SplashLoader({ children, duration = 4500 }: { children: 
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="relative z-10 flex flex-col items-center px-6 text-center"
             >
-              <div className="relative mb-8 h-28 w-28 overflow-hidden rounded-full border-4 border-amber-500 shadow-2xl shadow-amber-500/20 bg-white">
+              <div className="relative mb-8 h-28 w-28 overflow-hidden rounded-full border-4 border-teal-500 shadow-2xl shadow-teal-500/20 bg-white">
                 <Image src="/safwa.png" alt="Logo" fill priority className="object-cover" />
               </div>
 
@@ -71,7 +71,7 @@ export default function SplashLoader({ children, duration = 4500 }: { children: 
               {/* Progress track (Orange to Green) */}
               <div className="mt-10 h-1.5 w-56 overflow-hidden rounded-full bg-slate-300 md:w-72 shadow-inner">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-amber-500 to-green-500"
+                  className="h-full rounded-full bg-gradient-to-r from-teal-500 to-green-500"
                   style={{ width: `${progress}%` }}
                   transition={{ ease: 'linear', duration: 0.05 }}
                 />

@@ -28,7 +28,7 @@ export default function AdmissionsPage() {
               { step: "03", title: "Parent Interview", desc: "Meet with our academic team to align expectations." },
               { step: "04", title: "Welcome & Begin", desc: "Receive admission letter, pay fees, and start learning." },
             ].map((s, i) => (
-              <div key={i} className="relative p-6 bg-slate-50 rounded-2xl border border-slate-200">
+              <div key={i} className="relative p-6 bg-emerald-50 rounded-2xl border border-slate-200">
                 <div className="text-5xl font-black text-[var(--orange)]/20 mb-2">{s.step}</div>
                 <h3 className="font-bold text-[var(--navy)] text-lg mb-2">{s.title}</h3>
                 <p className="text-slate-600 text-sm">{s.desc}</p>
@@ -38,7 +38,7 @@ export default function AdmissionsPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-emerald-50">
         <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12">
           <div className="bg-white p-10 rounded-3xl border border-slate-200 shadow-sm">
             <FileText className="h-10 w-10 text-[var(--orange)] mb-4" />
@@ -84,3 +84,4 @@ export default function AdmissionsPage() {
     </main>
   );
 }
+

@@ -14,7 +14,7 @@ export default function IslamicStudiesPage() {
             { icon: Sun, title: "Seerah & Hadith", desc: "Life of Prophet Muhammad ﷺ and study of authentic hadith collections." },
             { icon: Users, title: "Akhlaq & Adab", desc: "Islamic character, manners, and ethics applied to daily life and interactions." },
           ].map((t, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <t.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
@@ -32,3 +32,4 @@ export default function IslamicStudiesPage() {
     </main>
   );
 }
+

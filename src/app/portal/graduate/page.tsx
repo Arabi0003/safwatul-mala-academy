@@ -40,7 +40,7 @@ export default function GraduatePortal() {
             <div><p className="font-[Playfair] font-bold text-[var(--navy)] text-sm">Graduate Portal</p><p className="text-[10px] text-slate-400">AS SAFWATUL-MALA</p></div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-lg hover:bg-slate-100"><Bell className="h-5 w-5 text-slate-500" /><span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" /></button>
+            <button className="relative p-2 rounded-lg hover:bg-emerald-100"><Bell className="h-5 w-5 text-slate-500" /><span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" /></button>
             <button onClick={() => setLoggedIn(false)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-red-600 hover:bg-red-50"><LogOut className="h-3.5 w-3.5" /> Logout</button>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function GraduatePortal() {
             <h2 className="font-bold text-[var(--navy)] mb-4 flex items-center gap-2"><FileCheck className="h-4 w-4 text-[var(--gold)]" /> Recent Activity</h2>
             <div className="space-y-3">
               {[{ t: "Certificate verified by employer request", d: "1 day ago", c: "var(--gold)" },{ t: "RSVP confirmed - Annual Alumni Meetup", d: "3 days ago", c: "var(--orange)" },{ t: "New job posting matched your profile", d: "1 week ago", c: "var(--ocean)" },{ t: "Profile updated with new qualification", d: "2 weeks ago", c: "var(--navy)" }].map((a, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50">
+                <div key={i} className="flex items-start gap-3 p-3 rounded-xl hover:bg-emerald-50">
                   <div className="h-2 w-2 rounded-full mt-1.5 flex-none" style={{ background: a.c }} />
                   <div><p className="text-sm font-medium text-[var(--navy)]">{a.t}</p><p className="text-[11px] text-slate-400">{a.d}</p></div>
                 </div>
@@ -86,4 +86,5 @@ export default function GraduatePortal() {
     </div>
   );
 }
+
 

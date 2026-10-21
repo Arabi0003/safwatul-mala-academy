@@ -1,77 +1,59 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import { SignJWT } from "jose";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { createServerClient } from "@/lib/supabase/server";
 
-const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "safwatul-mala-academy-jwt-secret-key-2024");
-const STAFF = ["SUPERADMIN", "ADMIN", "SECRETARY", "TEACHER"] as const;
-
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body = await req.json();
-    const id = String(body.id || body.username || body.staffId || body.studentId || "").trim();
-    const password = String(body.password || "");
-    const portalType = String(body.portalType || "STAFF").toUpperCase();
-    let selectedRole = body.role ? String(body.role).toUpperCase().replace("SUPER_ADMIN", "SUPERADMIN") : null;
+    const { email, password, role } = await request.json();
 
-    if (!id || !password) {
-      return NextResponse.json({ error: "ID and password are required." }, { status: 400 });
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 }
+      );
     }
 
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ staffId: id }, { studentId: id }, { email: id }],
-      },
+    const supabase = createServerClient();
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    if (!user || !user.isActive) {
-      return NextResponse.json({ error: "Invalid credentials or account disabled." }, { status: 401 });
+    if (error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 401 }
+      );
     }
 
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) {
-      return NextResponse.json({ error: "Invalid credentials. Check ID and password." }, { status: 401 });
-    }
-
-    if (portalType === "STUDENT") {
-      if (user.role !== "STUDENT" && user.role !== "GRADUATE") {
-        return NextResponse.json({ error: "Not a student account." }, { status: 403 });
-      }
-    } else {
-      if (!(STAFF as readonly string[]).includes(user.role)) {
-        return NextResponse.json({ error: "This account cannot use Staff Portal." }, { status: 403 });
-      }
-      if (selectedRole && selectedRole !== user.role) {
-        return NextResponse.json({ error: "Role mismatch. Account is " + user.role + "." }, { status: 403 });
-      }
-    }
-
-    const token = await new SignJWT({
-      userId: user.id,
-      role: user.role,
-      name: user.name,
-      staffId: user.staffId,
-      studentId: user.studentId,
-    })
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime("24h")
-      .sign(SECRET);
-
-    const res = NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      user: { id: user.id, name: user.name, role: user.role, staffId: user.staffId, studentId: user.studentId },
+      user: data.user,
+      role,
     });
-    res.cookies.set("auth-token", token, {
+
+    // Set auth cookie for middleware
+    response.cookies.set("auth_token", data.session.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24 * 7, // 7 days
     });
-    return res;
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Server login error." }, { status: 500 });
+
+    response.cookies.set("user_role", role || "student", {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

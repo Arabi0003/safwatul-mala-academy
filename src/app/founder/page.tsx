@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function FounderPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 min-h-screen bg-emerald-50">
       <PageHero 
         title="Meet Our Founder" 
         subtitle="A vision built on faith, integrity, and excellence."
@@ -30,9 +30,9 @@ export default function FounderPage() {
             
             {/* Beautiful Amber Framed Image */}
             <div className="w-full lg:w-1/3 flex justify-center">
-              <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-t-full bg-slate-200 shadow-2xl border-[6px] border-amber-500 overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 to-transparent z-10 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <span className="text-amber-400 font-serif font-bold text-xl tracking-wider">Visionary</span>
+              <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-t-full bg-slate-200 shadow-2xl border-[6px] border-teal-500 overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 to-transparent z-10 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <span className="text-teal-400 font-serif font-bold text-xl tracking-wider">Visionary</span>
                 </div>
                 {/* Fallback silhouette if image is missing */}
                 <div className="w-full h-full bg-slate-300 flex items-center justify-center text-slate-400">
@@ -44,13 +44,13 @@ export default function FounderPage() {
 
             {/* Content optimized for Readability (Pure Black Text) */}
             <div className="w-full lg:w-2/3">
-              <span className="text-amber-600 font-bold tracking-[0.25em] uppercase mb-4 block">
+              <span className="text-teal-600 font-bold tracking-[0.25em] uppercase mb-4 block">
                 The Visionary
               </span>
-              <h2 className="text-blue-950 mb-6 text-4xl font-serif font-bold">
+              <h2 className="text-emerald-950 mb-6 text-4xl font-serif font-bold">
                 Oseni Bashiru
               </h2>
-              <div className="w-20 h-1 bg-amber-500 mb-8 rounded-full"></div>
+              <div className="w-20 h-1 bg-teal-500 mb-8 rounded-full"></div>
               
               <div className="space-y-6 text-slate-900 font-medium text-lg leading-relaxed">
                 <p>
@@ -67,16 +67,16 @@ export default function FounderPage() {
               {/* Badges */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <div className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
-                  <Award className="text-amber-500" size={28} />
-                  <span className="text-blue-950 font-bold">Excellence</span>
+                  <Award className="text-teal-500" size={28} />
+                  <span className="text-emerald-950 font-bold">Excellence</span>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
-                  <BookOpen className="text-amber-500" size={28} />
-                  <span className="text-blue-950 font-bold">Knowledge</span>
+                  <BookOpen className="text-teal-500" size={28} />
+                  <span className="text-emerald-950 font-bold">Knowledge</span>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
-                  <HeartHandshake className="text-amber-500" size={28} />
-                  <span className="text-blue-950 font-bold">Integrity</span>
+                  <HeartHandshake className="text-teal-500" size={28} />
+                  <span className="text-emerald-950 font-bold">Integrity</span>
                 </div>
               </div>
             </div>
