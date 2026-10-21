@@ -1,14 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { ShieldCheck, ArrowRight, UserCircle } from 'lucide-react';
+import { ArrowRight, GraduationCap } from 'lucide-react';
 import PageHero from '@/components/ui/PageHero';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-export default function StaffPortal() {
+export default function StudentPortal() {
   const [isLoading, setIsLoading] = useState(false);
-  const role = 'student';
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +22,7 @@ export default function StaffPortal() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password, role })
+        body: JSON.stringify({ identifier, password, role: 'student' })
       });
       const data = await res.json();
       
@@ -59,11 +58,11 @@ export default function StaffPortal() {
               {/* Top Centered Logo */}
               <div className="flex justify-center mb-8">
                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-amber-500 overflow-hidden relative">
-                  <Image src="/safwa.png" alt="Academy Logo" fill className="object-cover p-1" />
+                  <Image src="/safwa.png" alt="Academy Logo" fill className="object-cover p-1" priority />
                 </div>
               </div>
 
-              <h2 className="text-blue-950 text-center mb-2 text-3xl">Student Login</h2>
+              <h2 className="text-blue-950 text-center mb-2 text-3xl font-bold">Student Login</h2>
               <p className="text-slate-600 font-medium text-center mb-8">
                 Enter your Student ID to access your dashboard.
               </p>
@@ -71,7 +70,21 @@ export default function StaffPortal() {
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Portal Role</label>
-                  <input type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Enter Student ID (e.g. ASM/2024/0001)"
+                  <div className="relative">
+                    <div className="w-full px-6 py-4 rounded-2xl bg-slate-100 border-2 border-slate-200 text-lg shadow-inner text-slate-800 font-bold flex items-center justify-between">
+                      <span className="flex items-center gap-2"><GraduationCap size={22} className="text-amber-500" /> STUDENT</span>
+                      <span className="text-xs bg-amber-500 text-white px-3 py-1 rounded-full font-extrabold uppercase">Active</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Student ID</label>
+                  <input 
+                    type="text" 
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
+                    placeholder="ASM/2024/0001"
                     className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
                     required
                   />
@@ -81,7 +94,9 @@ export default function StaffPortal() {
                   <label className="block text-sm font-bold text-blue-950 mb-2 ml-1 uppercase tracking-wider">Password</label>
                   <input 
                     type="password" 
-                    placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
                     className="w-full px-6 py-4 rounded-2xl bg-white border-2 border-slate-200 focus:border-amber-500 outline-none transition-all text-lg shadow-inner text-slate-900 placeholder:text-slate-400 font-medium relative z-10"
                     required
                   />
@@ -93,9 +108,7 @@ export default function StaffPortal() {
 
                 <button 
                   disabled={isLoading}
-                  className={`w-full text-white font-bold py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 group text-xl relative z-10 ${
-                    role === 'superadmin' ? 'bg-slate-900 hover:bg-slate-800 shadow-slate-900/30' : 'bg-blue-950 hover:bg-amber-600 shadow-blue-900/20'
-                  }`}
+                  className="w-full text-white font-bold py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 group text-xl relative z-10 bg-blue-950 hover:bg-amber-600 shadow-blue-900/20"
                 >
                   {isLoading ? (
                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
@@ -105,7 +118,9 @@ export default function StaffPortal() {
                     </>
                   )}
                 </button>
-              {error && <p className="text-red-500 text-center font-bold mt-4">{error}</p>}</form>
+
+                {error && <p className="text-red-500 text-center font-bold mt-4">{error}</p>}
+              </form>
             </div>
           </motion.div>
         </div>
