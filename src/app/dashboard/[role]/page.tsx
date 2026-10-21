@@ -1,70 +1,129 @@
 'use client';
-import React, { use, useState } from 'react';
-import PageHero from '@/components/ui/PageHero';
-import { useRouter } from 'next/navigation';
-import { ShieldCheck, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
+import React, { use } from 'react';
+import { Users, GraduationCap, TrendingUp, Calendar, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function Dashboard({ params }: { params: Promise<{ role: string }> }) {
   const resolvedParams = use(params);
   const roleName = resolvedParams.role.toUpperCase();
-  const router = useRouter();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/');
-  };
+  // Dynamic greeting based on time
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      <PageHero title="Secure Workspace" subtitle={`Authenticated as ${roleName}`} />
+    <div className="max-w-7xl mx-auto space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
-      <section className="py-20 px-6 -mt-32 relative z-10">
-        <div className="container mx-auto max-w-6xl">
-          {/* Main Dashboard Card */}
-          <div className="ultra-glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl border-white/60 bg-white/85">
-            
-            <div className="flex flex-col md:flex-row justify-between items-center mb-12 pb-8 border-b-2 border-slate-100">
-              <div className="flex items-center gap-6 mb-6 md:mb-0">
-                <div className="w-20 h-20 bg-blue-950 rounded-2xl flex items-center justify-center text-amber-400 shadow-xl shadow-blue-900/20 rotate-3">
-                  <ShieldCheck size={40} />
-                </div>
-                <div>
-                  <h2 className="text-3xl text-blue-950 font-bold">Welcome Back</h2>
-                  <p className="text-slate-500 font-medium flex items-center gap-2 mt-1">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    Encrypted Session Active
-                  </p>
-                </div>
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 mb-1">{greeting}!</h1>
+          <p className="text-slate-500 font-medium">Here is what is happening in the academy today.</p>
+        </div>
+        <button className="px-6 py-2.5 bg-blue-950 text-white rounded-xl font-bold hover:bg-blue-900 transition-colors shadow-lg shadow-blue-900/20">
+          + Quick Action
+        </button>
+      </div>
+
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { title: 'Total Students', value: '1,248', trend: '+12% this month', icon: <Users size={24}/>, color: 'text-blue-600', bg: 'bg-blue-100' },
+          { title: 'Active Classes', value: '42', trend: 'Ongoing right now', icon: <BookOpen size={24}/>, color: 'text-amber-600', bg: 'bg-amber-100' },
+          { title: 'Average Attendance', value: '94.5%', trend: '+2.1% from last week', icon: <TrendingUp size={24}/>, color: 'text-green-600', bg: 'bg-green-100' },
+          { title: 'Pending Reviews', value: '18', trend: 'Requires attention', icon: <AlertCircle size={24}/>, color: 'text-red-600', bg: 'bg-red-100' },
+        ].map((stat, i) => (
+          <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+            <div className="flex justify-between items-start mb-4">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                {stat.icon}
               </div>
-
-              <button 
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className="flex items-center gap-2 px-6 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 rounded-xl font-bold transition-all shadow-sm"
-              >
-                {isLoggingOut ? 'Terminating...' : <><LogOut size={20} /> Secure Logout</>}
-              </button>
             </div>
+            <h3 className="text-slate-500 font-bold text-sm mb-1">{stat.title}</h3>
+            <p className="text-3xl font-black text-slate-900 mb-2">{stat.value}</p>
+            <p className="text-xs font-bold text-slate-400">{stat.trend}</p>
+          </div>
+        ))}
+      </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { title: 'Profile Status', icon: <UserCircle size={32}/>, value: roleName, color: 'text-blue-600', bg: 'bg-blue-50' },
-                { title: 'System Access', icon: <LayoutDashboard size={32}/>, value: 'Granted', color: 'text-green-600', bg: 'bg-green-50' },
-                { title: 'Security Tier', icon: <ShieldCheck size={32}/>, value: 'Level 1 (JWT)', color: 'text-amber-600', bg: 'bg-amber-50' }
-              ].map((stat, i) => (
-                <div key={i} className={`p-8 rounded-3xl border border-white/40 shadow-lg flex flex-col items-center text-center ${stat.bg} transition-transform hover:-translate-y-1`}>
-                  <div className={`mb-4 ${stat.color}`}>{stat.icon}</div>
-                  <h3 className="text-slate-500 font-bold text-sm uppercase tracking-wider mb-2">{stat.title}</h3>
-                  <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
-                </div>
-              ))}
-            </div>
-
+      {/* Main Content Split */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Recent Activity Table */}
+        <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-slate-900">Recent Registrations</h2>
+            <button className="text-sm font-bold text-amber-600 hover:text-amber-700">View All</button>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b-2 border-slate-100">
+                  <th className="pb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Student Name</th>
+                  <th className="pb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Program</th>
+                  <th className="pb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Date</th>
+                  <th className="pb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Status</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {[
+                  { name: 'Abdullah Ibrahim', prog: 'Hifz Program', date: 'Oct 24, 2024', status: 'Admitted', color: 'bg-green-100 text-green-700' },
+                  { name: 'Aisha Muhammad', prog: 'Arabic Immersion', date: 'Oct 23, 2024', status: 'Pending', color: 'bg-amber-100 text-amber-700' },
+                  { name: 'Umar Farooq', prog: 'Standard Academic', date: 'Oct 22, 2024', status: 'Admitted', color: 'bg-green-100 text-green-700' },
+                  { name: 'Fatima Sani', prog: 'Weekend Islamiyyah', date: 'Oct 22, 2024', status: 'Reviewed', color: 'bg-blue-100 text-blue-700' },
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td className="py-4 font-bold text-slate-900">{row.name}</td>
+                    <td className="py-4 font-medium text-slate-500">{row.prog}</td>
+                    <td className="py-4 font-medium text-slate-500">{row.date}</td>
+                    <td className="py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${row.color}`}>
+                        {row.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      </section>
-    </main>
+
+        {/* Schedule Widget */}
+        <div className="bg-gradient-to-br from-blue-950 to-slate-900 rounded-3xl shadow-xl p-6 text-white relative overflow-hidden">
+          {/* Decorative glow */}
+          <div className="absolute -top-20 -right-20 w-48 h-48 bg-amber-500/20 blur-3xl rounded-full pointer-events-none"></div>
+          
+          <h2 className="text-xl font-bold mb-6 flex items-center gap-2 relative z-10">
+            <Calendar className="text-amber-400" /> Upcoming Schedule
+          </h2>
+          
+          <div className="space-y-4 relative z-10">
+            {[
+              { time: '08:00 AM', event: 'Morning Assembly', desc: 'Main Courtyard' },
+              { time: '09:30 AM', event: 'Advanced Tajweed', desc: 'Classroom A2' },
+              { time: '11:15 AM', event: 'Staff Briefing', desc: 'Conference Room' },
+              { time: '02:00 PM', event: 'Zuhr Prayer & Break', desc: 'Academy Mosque' },
+            ].map((schedule, i) => (
+              <div key={i} className="flex gap-4 items-start group cursor-pointer">
+                <div className="w-16 flex-shrink-0 text-right mt-1">
+                  <p className="text-xs font-bold text-slate-400 group-hover:text-amber-400 transition-colors">{schedule.time}</p>
+                </div>
+                <div className="relative pb-6 border-l border-white/20 pl-4 last:border-0 last:pb-0">
+                  <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors ring-4 ring-blue-950"></div>
+                  <p className="font-bold text-white">{schedule.event}</p>
+                  <p className="text-sm text-slate-400 mt-1">{schedule.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
   );
+}
+
+// Temporary icon fallback to avoid missing lucide imports
+function BookOpen({ size }: { size: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
 }
