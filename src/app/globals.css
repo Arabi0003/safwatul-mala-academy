@@ -1,59 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Calibri", "ui-sans-serif", "system-ui", sans-serif;
+
+  --color-primary: #1E3A8A;
+  --color-secondary: #F59E0B;
+  --color-accent: #EA580C;
+}
+
 @layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #0F172A;
-    --cream: #F8FAFC;
-    --pearl: #F1F5F9;
-
-    --navy-dark: #0A192F;
-    --navy: #0F2C59;
-    --ocean: #1E40AF;
-    --sky: #2563EB;
-    --sky-light: #E0F2FE;
-
-    --orange: #EA580C;
-    --orange-soft: #F97316;
-    --orange-glow: #FB923C;
-    --orange-deep: #C2410C;
-
-    --gold: #D97706;
-    --gold-soft: #FCD34D;
-
-    --ink: #0F172A;
-    --ink-soft: #334155;
-    --ink-muted: #64748B;
-  }
-
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', system-ui, -apple-system, sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.7;
+    @apply font-sans text-slate-900 bg-slate-50 leading-relaxed;
+    font-size: 18px;
+  }
+  h1, h2, h3 {
+    @apply font-serif font-bold tracking-tight;
+  }
+  h2 {
+    font-size: clamp(28px, 4vw, 32px) !important;
+    line-height: 1.25;
+  }
+}
+
+@layer components {
+  /* High-Definition Frosted Glass */
+  .ultra-glass {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
-    color: var(--navy);
+  .ultra-glass-dark {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+
+  .hover-card-anim {
+    @apply transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl;
   }
 }
 
-.font-heading {
-  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
+.animate-in {
+  animation: fadeInBlur 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.glass-dark {
-  background: rgba(10, 25, 47, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@keyframes fadeInBlur {
+  from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
