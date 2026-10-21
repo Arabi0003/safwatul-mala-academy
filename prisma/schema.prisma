@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Unified User Table for Real Authentication
+model User {
+  id        String   @id @default(uuid())
+  role      Role     @default(STUDENT)
+
+  // Identifiers (One of these will be used to login)
+  staffId   String?  @unique // e.g., ASM/ADMIN/01
+  studentId String?  @unique // e.g., ASM/2024/0001
+  email     String?  @unique
+
+  password  String   // Hashed via bcrypt
+  name      String
+  isActive  Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  SECRETARY
+  TEACHER
+  STUDENT
+  GRADUATE
+}

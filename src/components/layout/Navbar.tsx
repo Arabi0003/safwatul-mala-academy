@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -10,6 +10,48 @@ function NavbarContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  
+  const navRef = useRef<HTMLElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Smart Auto-Close Logic (6 Seconds of inactivity or Click Outside)
+  useEffect(() => {
+    const handleActivity = () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (isOpen || expandedItem) {
+        timeoutRef.current = setTimeout(() => {
+          setIsOpen(false);
+          setExpandedItem(null);
+        }, 6000); // 6 seconds
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+        setExpandedItem(null);
+      }
+    };
+
+    // Listeners
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('touchstart', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    
+    // Start initial timer if open
+    handleActivity();
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [isOpen, expandedItem]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -21,6 +63,8 @@ function NavbarContent() {
 
   const navLinks = [
     { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Our Founder', href: '/founder' },
     { 
       name: 'Programmes', 
       href: '#',
@@ -28,16 +72,14 @@ function NavbarContent() {
         { name: 'Primary School', href: '/programmes/primary' },
         { name: 'Secondary School', href: '/programmes/secondary' },
         { name: 'Tahfiz Program', href: '/programmes/tahfiz' },
-        { name: 'Adult Education', href: '/programmes/adult' },
       ]
     },
     { name: 'Admissions', href: '/enroll' },
-    { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
 
   return (
-    <nav className={`fixed w-full z-[100] transition-all duration-500 ${
+    <nav ref={navRef} className={`fixed w-full z-[100] transition-all duration-500 ${
       scrolled ? 'py-3 ultra-glass shadow-xl' : 'py-5 bg-transparent'
     }`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -56,18 +98,23 @@ function NavbarContent() {
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <div key={link.name} className="relative group">
+            <div 
+              key={link.name} 
+              className="relative group"
+              onMouseEnter={() => setExpandedItem(link.name)}
+              onMouseLeave={() => setExpandedItem(null)}
+            >
               <Link 
                 href={link.href}
-                className="text-[16px] font-bold text-slate-800 hover:text-amber-600 transition-colors flex items-center gap-1"
+                className="text-[16px] font-bold text-slate-800 hover:text-amber-600 transition-colors flex items-center gap-1 py-2"
               >
                 {link.name}
                 {link.submenu && <ChevronDown size={14} className="text-amber-500" />}
               </Link>
-              {link.submenu && (
-                <div className="absolute top-full left-0 mt-3 w-56 ultra-glass rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 shadow-2xl overflow-hidden p-2">
+              {link.submenu && expandedItem === link.name && (
+                <div className="absolute top-full left-0 mt-1 w-56 ultra-glass rounded-2xl transition-all duration-300 shadow-2xl overflow-hidden p-2">
                   {link.submenu.map((sub) => (
-                    <Link key={sub.name} href={sub.href} className="block px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-amber-500 hover:text-white transition-colors">
+                    <Link key={sub.name} href={sub.href} onClick={() => setExpandedItem(null)} className="block px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-amber-500 hover:text-white transition-colors">
                       {sub.name}
                     </Link>
                   ))}
@@ -77,11 +124,11 @@ function NavbarContent() {
           ))}
           
           <div className="flex items-center gap-3 ml-4">
-            <Link href="/portal/student" className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-blue-900 font-bold text-blue-900 hover:bg-blue-900 hover:text-white transition-all text-sm">
-              <User size={16} /> Portal
+            <Link href="/portal/staff" className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-blue-900 font-bold text-blue-900 hover:bg-blue-900 hover:text-white transition-all text-sm">
+              <User size={16} /> Staff
             </Link>
-            <Link href="/enroll" className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold transition-all shadow-lg shadow-amber-500/30 text-sm">
-              <Sparkles size={16} /> Enroll Now
+            <Link href="/portal/student" className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-blue-900 font-bold text-blue-900 hover:bg-blue-900 hover:text-white transition-all text-sm">
+              <User size={16} /> Student
             </Link>
           </div>
         </div>
@@ -122,8 +169,8 @@ function NavbarContent() {
              </div>
 
              <div className="flex flex-col gap-4 mb-8">
-               <Link href="/enroll" onClick={() => setIsOpen(false)} className="w-full py-4 bg-amber-500 text-white rounded-xl font-bold text-center text-xl shadow-lg">Enroll Now</Link>
-               <Link href="/portal/student" onClick={() => setIsOpen(false)} className="w-full py-4 border-2 border-white text-white rounded-xl font-bold text-center text-xl">Student Portal</Link>
+               <Link href="/portal/student" onClick={() => setIsOpen(false)} className="w-full py-4 bg-amber-500 text-white rounded-xl font-bold text-center text-xl shadow-lg">Student Portal</Link>
+               <Link href="/portal/staff" onClick={() => setIsOpen(false)} className="w-full py-4 border-2 border-white text-white rounded-xl font-bold text-center text-xl">Staff Portal</Link>
              </div>
           </motion.div>
         )}

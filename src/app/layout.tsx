@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import { Playfair_Display } from "next/font/google";
-import { Suspense } from "react";
+import { Playfair_Display, Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import AppShell from "@/components/layout/AppShell";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 const playfair = Playfair_Display({
+  variable: "--font-serif",
   subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://safwatulmalaacademy.online'),
   title: "AS SAFWATUL-MALA ACADEMY | Qur'an, Arabic & Academic Excellence | Abuja, Nigeria",
-  description: "Premier Islamic education academy in Abuja, Nigeria offering Qur'anic memorization (Hifz), Tajweed, Arabic language, Islamic studies, and modern academics.",
+  description: "Premier Islamic education academy in Abuja, Nigeria offering Qur'anic memorization, Arabic language, and modern academic subjects.",
 };
 
 export default function RootLayout({
@@ -22,13 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={playfair.variable}>
-      <body className="antialiased bg-white text-slate-900 flex flex-col min-h-screen">
-        <Suspense fallback={null}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${geistSans.variable} ${playfair.variable} antialiased bg-slate-50 text-slate-900`}>
+        <AppShell>
           <Navbar />
-        </Suspense>
-        <div className="flex-1">{children}</div>
-        <Footer />
+          {children}
+          <Footer />
+        </AppShell>
       </body>
     </html>
   );

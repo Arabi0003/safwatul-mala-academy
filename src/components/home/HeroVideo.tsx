@@ -1,122 +1,118 @@
-﻿"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, BookOpen, CheckCircle2 } from "lucide-react";
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight, BookOpen } from 'lucide-react';
 
 export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(false);
+  
+  // Array of videos to loop through
+  const videos = ['/videos/safwat_web.mp4', '/videos/safwa.mp4'];
+  const [currentVidIndex, setCurrentVidIndex] = useState(0);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const el = videoRef.current;
+    if (!el) return;
 
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
+    el.muted = true;
+    el.defaultMuted = true;
+    el.playsInline = true;
+    el.setAttribute('playsinline', 'true');
+    el.setAttribute('webkit-playsinline', 'true');
 
-    const handleCanPlay = () => setVideoReady(true);
-    video.addEventListener("canplay", handleCanPlay);
-
-    const playPromise = video.play();
+    const playPromise = el.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {});
+      playPromise.catch(() => console.log('Autoplay deferred'));
     }
+  }, [currentVidIndex]);
 
-    return () => video.removeEventListener("canplay", handleCanPlay);
-  }, []);
+  // Handle switching to the next video when the current one ends
+  const handleVideoEnded = () => {
+    setCurrentVidIndex((prev) => (prev + 1) % videos.length);
+  };
 
   return (
-    <section className="relative min-h-[90vh] md:min-h-[92vh] flex items-center justify-center overflow-hidden bg-[var(--navy-dark)] text-white pt-24 pb-16">
-
-      <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-        <div
-          className={`absolute inset-0 bg-[var(--navy-dark)] transition-opacity duration-700 ${videoReady ? "opacity-0" : "opacity-100"}`}
-          style={{
-            backgroundImage: "radial-gradient(circle at center, var(--navy) 0%, var(--navy-dark) 80%)",
-          }}
-        />
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster="/safwa.png"
-          className={`object-cover w-full h-full scale-105 transition-opacity duration-700 ${videoReady ? "opacity-55" : "opacity-0"}`}
-        >
-          <source src="/videos/safwat_web.mp4" type="video/mp4" />
-          <source src="/videos/safwat.mp4" type="video/mp4" />
-          <source src="/videos/safwa.mp4" type="video/mp4" />
-        </video>
-
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--navy-dark)] via-[var(--navy-dark)]/60 to-transparent pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--navy-dark)]/80 via-transparent to-[var(--navy-dark)]/80 pointer-events-none"></div>
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-900">
+      {/* Background Poster/Gradient Layer */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-slate-900" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
+      {/* High-Definition Fast Video with Dual Looping */}
+      <video
+        ref={videoRef}
+        key={videos[currentVidIndex]} // Forces video element to reload source
+        className="absolute inset-0 z-[1] h-full w-full object-cover opacity-50 transition-opacity duration-1000"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        poster="/safwa.png"
+        onEnded={handleVideoEnded}
+      >
+        <source src={videos[currentVidIndex]} type="video/mp4" />
+      </video>
 
-        <div className="relative h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 rounded-full bg-white p-1 shadow-2xl border-4 border-[var(--orange)] mb-6 overflow-hidden animate-in fade-in zoom-in duration-500">
-          <Image
-            src="/safwa.png"
-            alt="Safwatul-Mala Academy Seal"
-            fill
-            className="object-cover rounded-full"
-            priority
-          />
+      {/* Darker Overlays to Reduce Lightness & Increase Contrast */}
+      <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/95" />
+      <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-r from-blue-950/60 via-transparent to-green-900/30" />
+
+      {/* Content Layer */}
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pb-8 pt-28 text-center">
+        <div
+          className="mb-8 h-24 w-24 overflow-hidden rounded-full border-4 border-amber-500 shadow-2xl shadow-amber-500/30 animate-in"
+          style={{ animationDelay: '0.1s' }}
+        >
+          <div className="relative h-full w-full bg-white">
+            <Image src="/safwa.png" alt="As Safwatul-Mala Academy" fill priority className="object-cover" />
+          </div>
         </div>
 
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--orange)]/40 bg-[var(--orange)]/20 px-4 py-1.5 mb-6 backdrop-blur-md">
-          <span className="h-2 w-2 rounded-full bg-[var(--orange)] animate-ping"></span>
-          <span className="text-xs font-bold tracking-widest text-[var(--orange-glow)] uppercase">
-            Admissions Open • Abuja, Nigeria
-          </span>
-        </div>
-
-        <h1 className="font-[Playfair] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.15] tracking-tight mb-6 max-w-4xl">
-          Nurturing <span className="text-[var(--orange-glow)] underline decoration-[var(--orange)]/50 decoration-2 underline-offset-8">Quranic Souls</span> and Modern Minds
-        </h1>
-
-        <p className="max-w-2xl text-slate-200 text-sm sm:text-base md:text-xl font-normal leading-relaxed mb-8 md:mb-10 text-shadow">
-          AS SAFWATUL-MALA ACADEMY delivers authentic Quranic memorization (Hifz), classical Arabic, Islamic jurisprudence, and competitive conventional academics.
+        <p
+          className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-amber-400 animate-in drop-shadow-md"
+          style={{ animationDelay: '0.2s' }}
+        >
+          Abuja, Nigeria
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full max-w-md">
+        <h1
+          className="mb-6 font-serif text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl animate-in drop-shadow-2xl"
+          style={{ animationDelay: '0.35s' }}
+        >
+          AS SAFWATUL-MALA
+          <span className="mt-2 block text-amber-400">Academy</span>
+        </h1>
+
+        <p
+          className="mb-10 max-w-2xl text-lg font-medium leading-relaxed text-slate-100 md:text-xl animate-in drop-shadow-lg"
+          style={{ animationDelay: '0.5s' }}
+        >
+          Excellence in Qur&apos;an education, Arabic, and Islamic learning — nurturing minds with
+          faith, discipline, and academic strength.
+        </p>
+
+        <div
+          className="flex flex-col items-center gap-4 sm:flex-row animate-in"
+          style={{ animationDelay: '0.65s' }}
+        >
           <Link
             href="/enroll"
-            className="w-full sm:w-auto bg-[var(--orange)] hover:bg-[var(--orange-soft)] text-white px-8 py-4 rounded-xl font-bold text-sm sm:text-base shadow-xl transition flex items-center justify-center gap-3 group"
+            className="inline-flex items-center gap-2 rounded-2xl bg-amber-500 px-8 py-4 text-lg font-bold text-white shadow-xl shadow-amber-500/25 transition-all hover:bg-amber-600 hover:shadow-amber-500/40"
           >
-            Apply for Admission
-            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            Enroll Now <ArrowRight size={22} />
           </Link>
-
           <Link
-            href="/quran-studies"
-            className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-sm sm:text-base backdrop-blur-md transition flex items-center justify-center gap-2"
+            href="/about"
+            className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/30 bg-white/10 px-8 py-4 text-lg font-bold text-white backdrop-blur-md transition-all hover:bg-white/20"
           >
-            <BookOpen className="h-5 w-5 text-[var(--orange-glow)]" />
-            Explore Programmes
+            <BookOpen size={20} /> Discover More
           </Link>
         </div>
-
-        <div className="mt-12 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8 pt-6 md:pt-8 border-t border-white/10 w-full max-w-4xl text-left text-xs md:text-sm">
-          {[
-            "Full-Time Hifz and Academics",
-            "Weekend and Evening Madrasah",
-            "Structured Tajweed Certification",
-            "Global Virtual Classrooms",
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-slate-300 font-medium">
-              <CheckCircle2 className="h-4 w-4 text-[var(--orange-glow)] flex-none" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-
       </div>
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[3] h-32 bg-gradient-to-t from-slate-50 to-transparent" />
     </section>
   );
 }
