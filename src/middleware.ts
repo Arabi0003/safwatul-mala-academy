@@ -1,25 +1,26 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth_token')?.value;
-  const path = request.nextUrl.pathname;
-
-  // Protect dashboard and admin routes
-  const isProtected = path.startsWith('/dashboard') || path.startsWith('/portal/admin');
-
-  if (isProtected) {
-    if (!token) {
-      return NextResponse.redirect(new URL('/portal/staff', request.url));
-    }
-    // Token exists — allow through
-    // Full JWT verification happens in API routes via Supabase
-    return NextResponse.next();
-  }
-
-  return NextResponse.next();
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+const roleRoutes: Record<string, string[]> = {
+  super_admin: ['/dashboard/admin'],
+  admin: ['/dashboard/admin'],
+  teacher: ['/dashboard/teacher'],
+  student: ['/dashboard/student'],
+  staff: ['/dashboard/staff'],
+  graduate: ['/dashboard/graduate'],
 }
-
-export const config = {
-  matcher: ['/dashboard/:path*', '/portal/admin/:path*'],
-};
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  if (!pathname.startsWith('/dashboard/')) return NextResponse.next()
+  const token = request.cookies.get('auth_token')?.value
+  const role = request.cookies.get('user_role')?.value
+  if (!token) return NextResponse.redirect(new URL('/portal', request.url))
+  if (role) {
+    const allowed = roleRoutes[role] || []
+    const isAllowed = allowed.some((r) => pathname.startsWith(r))
+    if (!isAllowed && !pathname.startsWith('/dashboard/' + role)) {
+      return NextResponse.redirect(new URL('/dashboard/' + role, request.url))
+    }
+  }
+  return NextResponse.next()
+}
+export const config = { matcher: ['/dashboard/:path*'] }
