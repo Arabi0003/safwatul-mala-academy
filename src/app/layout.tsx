@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import SmartChat from '@/components/chat/SmartChat'
 import Footer from "@/components/layout/Footer";
 import AppShell from "@/components/layout/AppShell";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </AppShell>
+              <SmartChat />
       </body>
     </html>
   );

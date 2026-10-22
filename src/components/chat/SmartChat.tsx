@@ -1,368 +1,259 @@
-﻿"use client";
+'use client'
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { academy } from "@/config/academy";
-
-type Role = "visitor" | "parent" | "student" | "teacher" | "graduate";
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react'
 
 interface Message {
-  id: number;
-  from: "bot" | "user";
-  text: string;
-  links?: { label: string; href: string }[];
+  id: number
+  role: 'bot' | 'user'
+  text: string
 }
 
-const quickByRole: Record<Role, string[]> = {
-  visitor: [
-    "What programmes do you offer?",
-    "Where are you located?",
-    "How do I contact the academy?",
-    "How do I apply?",
-  ],
-  parent: [
-    "How does admission work?",
-    "What will my child learn?",
-    "How do I reach the academy?",
-    "Is there online learning?",
-  ],
-  student: [
-    "How do I open the student portal?",
-    "What is Qur'an Studies?",
-    "Who do I contact for help?",
-  ],
-  teacher: [
-    "How do I open the teacher portal?",
-    "Who do I contact for staff support?",
-  ],
-  graduate: [
-    "Is there a graduate portal?",
-    "How do I stay in touch?",
-  ],
-};
+const qaData: { keywords: string[]; answer: string }[] = [
+  {
+    keywords: ['hello', 'hi', 'hey', 'salam', 'assalamu', 'good morning', 'good evening'],
+    answer: 'Wa Alaikum Assalam! Welcome to Safwatulmala Academy. How can I help you today? You can ask about our courses, fees, admissions, or location.',
+  },
+  {
+    keywords: ['course', 'courses', 'program', 'programs', 'study', 'learn', 'offer', 'subjects'],
+    answer: "We offer 10 comprehensive courses:\n\n1. Qur'anic Studies (\u20A666,000)\n2. Arabic Language (\u20A655,000)\n3. Tajweed Mastery (\u20A655,000)\n4. Tafsir (\u20A660,000)\n5. Islamic Jurisprudence (\u20A650,000)\n6. Hadith Sciences (\u20A650,000)\n7. Aqeedah (\u20A645,000)\n8. Islamic History & Seerah (\u20A645,000)\n9. Islamic Ethics (\u20A640,000)\n10. Da'wah & Communication (\u20A645,000)\n\nVisit our Courses page for full details!",
+  },
+  {
+    keywords: ['fee', 'fees', 'price', 'cost', 'tuition', 'how much', 'payment', 'pay'],
+    answer: "Our course fees range from \u20A640,000 to \u20A666,000 per session. Payment is made securely through Paystack. You can enroll directly from our Courses page. Would you like to know about a specific course?",
+  },
+  {
+    keywords: ['admission', 'admit', 'enroll', 'enrol', 'register', 'registration', 'apply', 'join'],
+    answer: "To enroll at Safwatulmala Academy:\n\n1. Visit our Courses page\n2. Choose your preferred course\n3. Click 'Enroll Now'\n4. Fill in your details and pay via Paystack\n5. You'll receive a confirmation email\n\nIt's that simple! Admissions are open year-round.",
+  },
+  {
+    keywords: ['location', 'address', 'where', 'find', 'direction', 'map', 'campus'],
+    answer: "Safwatulmala Academy is located in Nigeria. For the exact address and directions, please visit our Contact page or call us directly. We also offer online learning for students anywhere in the world!",
+  },
+  {
+    keywords: ['contact', 'phone', 'call', 'email', 'reach', 'whatsapp', 'social'],
+    answer: "You can reach us through:\n\n- Contact page on our website\n- Email via the Contact form\n- Social media channels\n\nOur team typically responds within 24 hours. We'd love to hear from you!",
+  },
+  {
+    keywords: ['online', 'remote', 'virtual', 'distance', 'internet', 'zoom'],
+    answer: "Yes! We offer comprehensive online learning programs. You can study from anywhere in the world with live classes, recorded sessions, and interactive assignments. Visit our Online Learning page for details.",
+  },
+  {
+    keywords: ['quran', "qur'an", 'quranic', 'hifz', 'memoriz', 'recitation', 'tajweed'],
+    answer: "Our Qur'anic Studies program (\u20A666,000) is one of our flagship courses! It includes Hifz (memorization), Tajweed rules, Tafsir classes, and weekly assessments. We also have a dedicated Tajweed Mastery course (\u20A655,000). Both are taught by certified scholars.",
+  },
+  {
+    keywords: ['arabic', 'language', 'nahw', 'sarf', 'grammar'],
+    answer: "Our Arabic Language course (\u20A655,000) covers everything from beginner to advanced levels. You'll learn Nahw (grammar), Sarf (morphology), conversation, reading, and writing with native-speaking tutors. Duration: 10 months.",
+  },
+  {
+    keywords: ['founder', 'who started', 'who founded', 'owner', 'established'],
+    answer: "Safwatulmala Academy was founded with a vision to provide authentic Islamic education accessible to all. Visit our Founder page to learn more about the inspiring story behind the academy.",
+  },
+  {
+    keywords: ['time', 'hours', 'schedule', 'when', 'open', 'class time', 'duration'],
+    answer: "Our courses run in structured sessions ranging from 6 to 12 months depending on the program. Classes are scheduled to accommodate different time zones for our online students. Check the specific course page for detailed schedules.",
+  },
+  {
+    keywords: ['certificate', 'certification', 'diploma', 'degree', 'ijazah', 'qualification'],
+    answer: "Upon successful completion of any course, students receive a certificate of completion from Safwatulmala Academy. Advanced Qur'an students may also be eligible for Ijazah (chain of transmission) certification.",
+  },
+  {
+    keywords: ['thank', 'thanks', 'jazaak', 'jazakallah', 'appreciate'],
+    answer: "Wa Iyyakum! May Allah bless your pursuit of knowledge. If you have any more questions, feel free to ask. We're always here to help!",
+  },
+  {
+    keywords: ['bye', 'goodbye', 'see you', 'farewell', 'ma\'a salama'],
+    answer: "Ma'a As-Salama! May Allah grant you success in your studies. We hope to see you enrolled soon. Feel free to return anytime you have questions!",
+  },
+]
 
-function answer(question: string): Message {
-  const q = question.toLowerCase();
+const quickReplies = ['Courses', 'Fees', 'Admission', 'Online Learning', 'Contact']
 
-  if (q.includes("programme") || q.includes("offer") || q.includes("course") || q.includes("learn")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "We focus on four areas: Qur'an Studies (recitation, hifz, understanding), Huruf & Arabic, Islamic Studies, and selected academic subjects. Qur'an is at the centre of everything.",
-      links: [
-        { label: "Qur'an Studies", href: "/quran-studies" },
-        { label: "Huruf & Arabic", href: "/huruf-arabic" },
-        { label: "All Programmes", href: "/#programmes" },
-      ],
-    };
+function getResponse(input: string): string {
+  const lower = input.toLowerCase().trim()
+  for (const qa of qaData) {
+    if (qa.keywords.some((kw) => lower.includes(kw))) return qa.answer
   }
-
-  if (q.includes("admit") || q.includes("enrol") || q.includes("enroll") || q.includes("apply") || q.includes("join") || q.includes("admission")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Admissions are open. The usual path is: enquire → placement assessment → application → confirmation. Fees and document lists are confirmed directly by the academy.",
-      links: [
-        { label: "Admissions page", href: "/admissions" },
-        { label: "Contact us", href: "/contact" },
-      ],
-    };
-  }
-
-  if (q.includes("location") || q.includes("where") || q.includes("address") || q.includes("abuja")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: `We are based in ${academy.location}. The full street address will be published once confirmed. You can reach us by phone or email in the meantime.`,
-      links: [{ label: "Contact", href: "/contact" }],
-    };
-  }
-
-  if (q.includes("contact") || q.includes("phone") || q.includes("email") || q.includes("call") || q.includes("reach")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: `Email: ${academy.emails[0]} or ${academy.emails[1]}. Phone: ${academy.phone.formatted}. Location: ${academy.location}.`,
-      links: [{ label: "Contact page", href: "/contact" }],
-    };
-  }
-
-  if (q.includes("portal") || q.includes("login") || q.includes("sign in") || q.includes("dashboard")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Portals for students, teachers, staff, and graduates are listed on the Portals page. Secure sign-in will go live when the academy activates accounts. There is no fake login.",
-      links: [
-        { label: "All Portals", href: "/portal" },
-        { label: "Student Portal", href: "/portal/student" },
-      ],
-    };
-  }
-
-  if (q.includes("online") || q.includes("remote") || q.includes("virtual") || q.includes("distance")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Online learning options are being developed so students can join when they cannot attend in person. Details will be published as they are confirmed.",
-      links: [{ label: "Online Learning", href: "/online-learning" }],
-    };
-  }
-
-  if (q.includes("qur") || q.includes("hifz") || q.includes("tajweed") || q.includes("memor")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Qur'an Studies covers tajweed, memorization (hifz), understanding, and regular revision. Students are placed by level after a simple assessment.",
-      links: [{ label: "Qur'an Studies", href: "/quran-studies" }],
-    };
-  }
-
-  if (q.includes("arabic") || q.includes("huruf") || q.includes("letter")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Huruf & Arabic starts from the letters and builds toward reading, writing, and simple conversation. Beginners are welcome.",
-      links: [{ label: "Huruf & Arabic", href: "/huruf-arabic" }],
-    };
-  }
-
-  if (q.includes("teacher") || q.includes("staff") || q.includes("who teach")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "We look for teachers who know their subject and can teach it with patience. Individual profiles will be published when the academy approves them.",
-      links: [
-        { label: "Teachers & Approach", href: "/teachers" },
-        { label: "Teacher Portal", href: "/portal/teacher" },
-      ],
-    };
-  }
-
-  if (q.includes("fee") || q.includes("cost") || q.includes("price") || q.includes("pay")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Fee details are provided directly by the academy during admissions. I cannot quote figures that have not been confirmed. Please contact the office.",
-      links: [
-        { label: "Contact", href: "/contact" },
-        { label: "Admissions", href: "/admissions" },
-      ],
-    };
-  }
-
-  if (q.includes("hello") || q.includes("hi") || q.includes("salam") || q.includes("hey")) {
-    return {
-      id: Date.now(),
-      from: "bot",
-      text: "Wa alaykum as-salam. Welcome to AS SAFWATUL-MALA ACADEMY. How can I help you today?",
-    };
-  }
-
-  return {
-    id: Date.now(),
-    from: "bot",
-    text: `I can help with programmes, admissions, contact details, and portals. For anything else, please email ${academy.emails[0]} or call ${academy.phone.formatted}.`,
-    links: [
-      { label: "Contact", href: "/contact" },
-      { label: "Admissions", href: "/admissions" },
-      { label: "Portals", href: "/portal" },
-    ],
-  };
+  return "Thank you for your question! I'm not sure about that specific topic, but our team would love to help. Please visit our Contact page or try asking about our courses, fees, admissions, or location."
 }
 
 export default function SmartChat() {
-  const [open, setOpen] = useState(false);
-  const [role, setRole] = useState<Role | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([
+    { id: 1, role: 'bot', text: 'Assalamu Alaikum! Welcome to Safwatulmala Academy. I\'m your virtual assistant. How can I help you today?' },
+  ])
+  const [input, setInput] = useState('')
+  const [typing, setTyping] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const idRef = useRef(2)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const startAs = (r: Role) => {
-    setRole(r);
-    setMessages([
-      {
-        id: 1,
-        from: "bot",
-        text:
-          r === "visitor"
-            ? "Welcome. Ask me about programmes, admissions, or how to reach the academy."
-            : r === "parent"
-            ? "Welcome. I can help with admissions, what your child will learn, and contact details."
-            : r === "student"
-            ? "Welcome. I can point you to the student portal and programme pages."
-            : r === "teacher"
-            ? "Welcome. I can point you to the teacher portal and support contacts."
-            : "Welcome. I can point you to the graduate portal and how to stay in touch.",
-      },
-    ]);
-  };
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [messages, typing])
 
   const send = (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    const userMsg: Message = { id: Date.now(), from: "user", text: trimmed };
-    setMessages((m) => [...m, userMsg]);
-    setInput("");
-    setTimeout(() => {
-      setMessages((m) => [...m, answer(trimmed)]);
-    }, 400);
-  };
+    if (!text.trim()) return
+    const userMsg: Message = { id: idRef.current++, role: 'user', text: text.trim() }
+    setMessages((prev) => [...prev, userMsg])
+    setInput('')
+    setTyping(true)
 
-  const reset = () => {
-    setRole(null);
-    setMessages([]);
-    setInput("");
-  };
+    setTimeout(() => {
+      const reply = getResponse(text)
+      const botMsg: Message = { id: idRef.current++, role: 'bot', text: reply }
+      setMessages((prev) => [...prev, botMsg])
+      setTyping(false)
+    }, 800 + Math.random() * 600)
+  }
 
   return (
     <>
-      {/* Launcher */}
-      <motion.button
-        onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 right-6 z-[90] w-14 h-14 rounded-full bg-gold text-brown-deep shadow-lg shadow-gold/30 flex items-center justify-center hover:bg-gold-dark hover:text-white transition-colors"
-        aria-label={open ? "Close chat" : "Open chat"}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
-      </motion.button>
+      {/* Floating Button */}
+      <AnimatePresence>
+        {!open && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setOpen(true)}
+            className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-500/30 flex items-center justify-center text-white hover:shadow-emerald-500/50 transition-shadow"
+          >
+            <MessageCircle className="h-6 w-6" />
+            {/* Pulse ring */}
+            <span className="absolute inset-0 rounded-full bg-emerald-400/30 animate-ping" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Panel */}
+      {/* Chat Window */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.96 }}
-            transition={{ duration: 0.25 }}
-            className="fixed bottom-24 right-6 z-[90] w-[min(100vw-2rem,380px)] h-[min(70vh,520px)] rounded-2xl overflow-hidden shadow-2xl border border-gold-light/30 flex flex-col bg-white"
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl border border-emerald-700/30 bg-gradient-to-b from-emerald-950 to-[#010d09] shadow-2xl shadow-emerald-950/50 overflow-hidden flex flex-col"
+            style={{ height: '520px' }}
           >
             {/* Header */}
-            <div className="bg-brown-deep px-4 py-3.5 flex items-center gap-3">
-              {role && (
-                <button onClick={reset} className="text-gold/70 hover:text-gold p-1" aria-label="Back">
-                  <ArrowLeft className="w-4 h-4" />
-                </button>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="text-gold font-heading font-bold text-sm truncate">Safwatul Mala Assistant</p>
-                <p className="text-white/40 text-[10px] tracking-wide">
-                  {role ? `${role.charAt(0).toUpperCase() + role.slice(1)} help` : "Choose who you are"}
-                </p>
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600">
+              <div className="flex items-center gap-2.5">
+                <div className="h-9 w-9 rounded-full bg-white/20 flex items-center justify-center">
+                  <Bot className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white flex items-center gap-1">
+                    Safwa Assistant
+                    <Sparkles className="h-3 w-3 text-yellow-300" />
+                  </p>
+                  <p className="text-[10px] text-white/60 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-400 inline-block" />
+                    Online now
+                  </p>
+                </div>
               </div>
-              <button onClick={() => setOpen(false)} className="text-white/40 hover:text-white p-1" aria-label="Close">
-                <X className="w-4 h-4" />
+              <button
+                onClick={() => setOpen(false)}
+                className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+              >
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Body */}
-            <div className="flex-1 overflow-y-auto p-4 bg-ivory/40">
-              {!role ? (
-                <div className="space-y-3">
-                  <p className="text-sm text-brown-light mb-4">
-                    Who are you visiting as? This helps me show the right options.
-                  </p>
-                  {(
-                    [
-                      ["visitor", "Visitor / General"],
-                      ["parent", "Parent / Guardian"],
-                      ["student", "Student"],
-                      ["teacher", "Teacher / Staff"],
-                      ["graduate", "Graduate / Alumni"],
-                    ] as [Role, string][]
-                  ).map(([key, label]) => (
-                    <button
-                      key={key}
-                      onClick={() => startAs(key)}
-                      className="w-full text-left px-4 py-3 rounded-xl border border-platinum bg-white hover:border-gold/40 hover:bg-gold-pale/30 transition-all text-sm font-medium text-brown-deep"
-                    >
-                      {label}
-                    </button>
-                  ))}
-                  <p className="text-[11px] text-brown-muted pt-2">
-                    This assistant uses verified academy information only. It is not a live AI connection.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {messages.map((m) => (
-                    <div key={m.id} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
-                      <div
-                        className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                          m.from === "user"
-                            ? "bg-gold text-brown-deep rounded-br-md"
-                            : "bg-white border border-platinum/60 text-brown rounded-bl-md"
-                        }`}
-                      >
-                        <p>{m.text}</p>
-                        {m.links && m.links.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-1.5">
-                            {m.links.map((l) => (
-                              <Link
-                                key={l.href}
-                                href={l.href}
-                                onClick={() => setOpen(false)}
-                                className="inline-block text-xs font-semibold text-gold-dark bg-gold/10 px-2.5 py-1 rounded-full hover:bg-gold/20 transition-colors"
-                              >
-                                {l.label} →
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  <div ref={bottomRef} />
-                </div>
+            {/* Messages */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3 scroll-smooth">
+              {messages.map((msg) => (
+                <motion.div
+                  key={msg.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className={`h-7 w-7 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${
+                    msg.role === 'bot' ? 'bg-emerald-600/30' : 'bg-teal-500/30'
+                  }`}>
+                    {msg.role === 'bot' ? <Bot className="h-3.5 w-3.5 text-emerald-400" /> : <User className="h-3.5 w-3.5 text-teal-400" />}
+                  </div>
+                  <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
+                    msg.role === 'bot'
+                      ? 'bg-emerald-900/50 text-emerald-100/80 rounded-tl-sm border border-emerald-700/20'
+                      : 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-tr-sm'
+                  }`}>
+                    {msg.text}
+                  </div>
+                </motion.div>
+              ))}
+
+              {typing && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex gap-2"
+                >
+                  <div className="h-7 w-7 rounded-full bg-emerald-600/30 flex items-center justify-center flex-shrink-0 mt-1">
+                    <Bot className="h-3.5 w-3.5 text-emerald-400" />
+                  </div>
+                  <div className="bg-emerald-900/50 rounded-2xl rounded-tl-sm px-4 py-3 border border-emerald-700/20 flex gap-1">
+                    {[0, 1, 2].map((i) => (
+                      <motion.span
+                        key={i}
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.15 }}
+                        className="h-2 w-2 rounded-full bg-emerald-400/60"
+                      />
+                    ))}
+                  </div>
+                </motion.div>
               )}
             </div>
 
-            {/* Quick questions + input */}
-            {role && (
-              <div className="border-t border-platinum/50 bg-white">
-                <div className="px-3 pt-2 flex gap-1.5 overflow-x-auto scrollbar-none">
-                  {quickByRole[role].map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => send(q)}
-                      className="shrink-0 text-[11px] px-2.5 py-1 rounded-full border border-gold/25 text-gold-dark hover:bg-gold/10 transition-colors"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
-                <form
-                  className="flex items-center gap-2 p-3"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    send(input);
-                  }}
-                >
-                  <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a question..."
-                    className="flex-1 px-3.5 py-2.5 rounded-full border border-platinum bg-ivory/50 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 text-brown-deep"
-                  />
+            {/* Quick Replies */}
+            {messages.length <= 2 && (
+              <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+                {quickReplies.map((qr) => (
                   <button
-                    type="submit"
-                    className="w-10 h-10 rounded-full bg-gold text-brown-deep flex items-center justify-center hover:bg-gold-dark hover:text-white transition-colors"
-                    aria-label="Send"
+                    key={qr}
+                    onClick={() => send(qr)}
+                    className="rounded-full border border-emerald-600/30 bg-emerald-900/30 px-3 py-1 text-[11px] text-emerald-300/70 hover:bg-emerald-600/20 hover:text-emerald-300 transition-colors"
                   >
-                    <Send className="w-4 h-4" />
+                    {qr}
                   </button>
-                </form>
+                ))}
               </div>
             )}
+
+            {/* Input */}
+            <div className="px-3 py-3 border-t border-emerald-800/30">
+              <form
+                onSubmit={(e) => { e.preventDefault(); send(input) }}
+                className="flex items-center gap-2"
+              >
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-1 rounded-xl border border-emerald-700/30 bg-emerald-900/30 px-3.5 py-2.5 text-sm text-white placeholder:text-emerald-400/30 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim()}
+                  className="h-10 w-10 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-lg disabled:opacity-30 hover:shadow-emerald-500/30 transition-all"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  );
+  )
 }
