@@ -1,9 +1,9 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import { BookOpen, Users, Award, Heart, Target, Compass } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero 
         tag="Who We Are"
         title="A Legacy of Qur'anic Light & Academic Excellence"
@@ -23,7 +23,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="relative">
-            <div className="aspect-square rounded-3xl bg-gradient-to-br from-[var(--sky-light)] to-white border border-slate-200 p-10 flex items-center justify-center">
+            <div className="aspect-square rounded-3xl bg-gradient-to-br from-[var(--sky-light)] to-white border border-emerald-200 p-10 flex items-center justify-center">
               <BookOpen className="h-32 w-32 text-[var(--ocean)] opacity-50" />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-[var(--orange)] text-white p-6 rounded-2xl shadow-xl">
@@ -46,7 +46,7 @@ export default function AboutPage() {
               { icon: Compass, title: "Our Mission", desc: "To deliver authentic Qur'anic, Arabic, and Islamic education alongside rigorous academic standards in a nurturing environment." },
               { icon: Heart, title: "Our Values", desc: "Taqwa, Excellence, Integrity, Discipline, and Service — guiding every lesson, every interaction, every decision." },
             ].map((item, i) => (
-              <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition">
+              <div key={i} className="bg-white p-8 rounded-2xl border border-emerald-200 shadow-sm hover:shadow-xl transition">
                 <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                   <item.icon className="h-7 w-7 text-[var(--orange)]" />
                 </div>

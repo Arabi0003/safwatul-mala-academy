@@ -1,4 +1,4 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import { Calendar, Bell, ArrowRight } from "lucide-react";
 
 export default function CalendarPage() {
@@ -10,7 +10,7 @@ export default function CalendarPage() {
     { date: "Jan 15, 2026", title: "Second Term Resumption", type: "Academic" },
   ];
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Stay Informed" title="Calendar & Announcements" subtitle="Keep track of important dates, events, and updates from AS Safwatul-Mala Academy." />
       
       <section className="py-24">
@@ -18,7 +18,7 @@ export default function CalendarPage() {
           <h2 className="font-[Playfair] text-3xl font-bold text-[var(--navy)] mb-10 text-center">Upcoming Events</h2>
           <div className="space-y-4">
             {events.map((e, i) => (
-              <div key={i} className="flex items-center gap-6 p-6 bg-emerald-50 rounded-2xl border border-slate-200 hover:border-[var(--orange)] transition">
+              <div key={i} className="flex items-center gap-6 p-6 bg-emerald-50 rounded-2xl border border-emerald-200 hover:border-[var(--orange)] transition">
                 <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center flex-none">
                   <Calendar className="h-6 w-6 text-[var(--orange)]" />
                 </div>

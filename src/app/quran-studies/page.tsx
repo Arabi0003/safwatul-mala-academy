@@ -1,10 +1,10 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
 import { BookOpen, Mic, Award, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function QuranStudiesPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Programme" title="Qur'an Studies" subtitle="Rooted in Tajweed, nurtured through Hifz — our comprehensive Qur'an program develops reciters and memorizers of the Book of Allah." />
 
       <section className="py-24">
@@ -14,7 +14,7 @@ export default function QuranStudiesPage() {
             { icon: Mic, title: "Tajweed Mastery", desc: "In-depth study of the rules of Qur'anic recitation under qualified ustadhs." },
             { icon: Award, title: "Hifz (Memorization)", desc: "Structured memorization program leading to full Hifz with sanad certification." },
           ].map((t, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <t.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>
@@ -37,7 +37,7 @@ export default function QuranStudiesPage() {
               "Tafseer of memorized portions",
               "Islamic etiquette with the Qur'an",
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200">
+              <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-emerald-200">
                 <CheckCircle className="h-5 w-5 text-[var(--orange)] flex-none" />
                 <span className="text-slate-700 font-medium">{item}</span>
               </div>

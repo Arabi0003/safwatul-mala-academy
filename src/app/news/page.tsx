@@ -1,4 +1,4 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import { BookOpen, ArrowRight } from "lucide-react";
 
 export default function NewsPage() {
@@ -10,13 +10,13 @@ export default function NewsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Resources" title="News, Articles & Reflections" subtitle="Insights, announcements, and beneficial knowledge from the Academy." />
 
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-6">
           {articles.map((a, i) => (
-            <div key={i} className="p-8 bg-emerald-50 rounded-2xl border border-slate-200 hover:shadow-xl hover:border-[var(--orange)] transition group">
+            <div key={i} className="p-8 bg-emerald-50 rounded-2xl border border-emerald-200 hover:shadow-xl hover:border-[var(--orange)] transition group">
               <span className="text-xs font-bold text-[var(--orange)] uppercase tracking-widest">{a.cat}</span>
               <h3 className="font-[Playfair] text-2xl font-bold text-[var(--navy)] mt-2 mb-3 group-hover:text-[var(--orange)] transition">{a.title}</h3>
               <p className="text-slate-600 mb-4">{a.excerpt}</p>

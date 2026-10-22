@@ -108,7 +108,7 @@ function NavbarContent() {
             >
               <Link
                 href={link.href}
-                className="text-[16px] font-bold text-slate-800 hover:text-teal-600 transition-colors flex items-center gap-1 py-2"
+                className="text-[16px] font-bold text-emerald-800 hover:text-teal-600 transition-colors flex items-center gap-1 py-2"
               >
                 {link.name}
                 {link.submenu && <ChevronDown size={14} className="text-teal-500" />}
@@ -120,7 +120,7 @@ function NavbarContent() {
                       key={sub.name}
                       href={sub.href}
                       onClick={() => setExpandedItem(null)}
-                      className="block px-4 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-teal-500 hover:text-white transition-colors"
+                      className="block px-4 py-2.5 rounded-xl text-sm font-bold text-emerald-800 hover:bg-teal-500 hover:text-white transition-colors"
                     >
                       {sub.name}
                     </Link>

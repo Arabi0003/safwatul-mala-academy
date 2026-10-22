@@ -67,7 +67,7 @@ export default function StaffLoginPage() {
             {/* Role selector */}
             <div className="flex gap-2 mb-6">
               {ROLES.map((r) => (
-                <button key={r} onClick={() => setRole(r)} className={"flex-1 py-2 rounded-lg text-[10px] font-bold transition " + (role === r ? "bg-emerald-700 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200")}>
+                <button key={r} onClick={() => setRole(r)} className={"flex-1 py-2 rounded-lg text-[10px] font-bold transition " + (role === r ? "bg-emerald-700 text-white" : "bg-emerald-100 text-slate-500 hover:bg-emerald-200")}>
                   {r}
                 </button>
               ))}
@@ -85,14 +85,14 @@ export default function StaffLoginPage() {
                 <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wider">Email Address</label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                  <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setError(""); }} placeholder="staff@academy.edu" className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-sm" required />
+                  <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setError(""); }} placeholder="staff@academy.edu" className="w-full pl-10 pr-4 py-3 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-sm" required />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wider">Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                  <input type="password" value={password} onChange={(e) => { setPassword(e.target.value); setError(""); }} placeholder="Enter your password" className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-sm" required />
+                  <input type="password" value={password} onChange={(e) => { setPassword(e.target.value); setError(""); }} placeholder="Enter your password" className="w-full pl-10 pr-4 py-3 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-sm" required />
                 </div>
               </div>
               <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-70 hover:bg-emerald-800 transition">

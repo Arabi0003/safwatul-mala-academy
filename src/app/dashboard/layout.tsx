@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
@@ -61,7 +61,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <div className="flex-1 md:ml-72 flex flex-col h-screen overflow-hidden relative">
         
         {/* TOP HEADER */}
-        <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0 shadow-sm">
+        <header className="h-20 bg-white/80 backdrop-blur-md border-b border-emerald-200 flex items-center justify-between px-8 z-10 sticky top-0 shadow-sm">
           <div className="flex items-center gap-4 w-96 relative">
             <Search className="absolute left-4 text-slate-400" size={20} />
             <input 
@@ -76,10 +76,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <Bell size={24} />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
             </button>
-            <div className="h-8 w-px bg-slate-200"></div>
+            <div className="h-8 w-px bg-emerald-200"></div>
             <div className="flex items-center gap-3 text-right">
               <div className="hidden md:block">
-                <p className="text-sm font-bold text-slate-900">{user.name}</p>
+                <p className="text-sm font-bold text-emerald-900">{user.name}</p>
                 <p className="text-xs font-semibold text-teal-600 uppercase tracking-wider">{user.role}</p>
               </div>
               <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-950 font-bold border-2 border-white shadow-md">

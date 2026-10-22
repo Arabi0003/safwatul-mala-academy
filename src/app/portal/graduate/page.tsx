@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -33,7 +33,7 @@ export default function GraduatePortal() {
 
   return (
     <div className="min-h-screen bg-[var(--cream)]">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="bg-white border-b border-emerald-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 rounded-full p-0.5 border-2 border-[var(--gold)] overflow-hidden"><Image src="/safwa.png" alt="Logo" fill className="object-cover rounded-full" /></div>
@@ -45,7 +45,7 @@ export default function GraduatePortal() {
           </div>
         </div>
       </header>
-      <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="font-[Playfair] text-2xl sm:text-3xl font-bold text-[var(--navy)]">As-salamu alaykum, Yusuf!</h1>
           <p className="text-slate-500 text-sm mt-1">Welcome to your alumni network. Class of 2023.</p>
@@ -75,7 +75,7 @@ export default function GraduatePortal() {
             <h2 className="font-bold text-[var(--navy)] mb-4 flex items-center gap-2"><Briefcase className="h-4 w-4 text-[var(--gold)]" /> Quick Actions</h2>
             <div className="grid grid-cols-2 gap-3">
               {["Verify Certificate", "Update Profile", "Browse Jobs", "Alumni Network", "Upcoming Events", "Contact Academy"].map((a, i) => (
-                <button key={i} className="p-4 rounded-xl border border-slate-200 hover:shadow-md transition text-sm font-semibold text-[var(--navy)] hover:border-[var(--gold)]">
+                <button key={i} className="p-4 rounded-xl border border-emerald-200 hover:shadow-md transition text-sm font-semibold text-[var(--navy)] hover:border-[var(--gold)]">
                   {a}
                 </button>
               ))}

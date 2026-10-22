@@ -226,7 +226,7 @@ export default function PortalLogin({ role, variant, accentColor, accentBg, onLo
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setError(""); }}
                     placeholder="your.email@academy.edu"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 text-sm transition"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 text-sm transition"
                     style={{ "--tw-ring-color": accentColor + "33" } as React.CSSProperties}
                     required
                   />
@@ -242,7 +242,7 @@ export default function PortalLogin({ role, variant, accentColor, accentBg, onLo
                     value={password}
                     onChange={(e) => { setPassword(e.target.value); setError(""); }}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 text-sm transition"
+                    className="w-full pl-10 pr-11 py-3 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 text-sm transition"
                     style={{ "--tw-ring-color": accentColor + "33" } as React.CSSProperties}
                     required
                   />
@@ -254,7 +254,7 @@ export default function PortalLogin({ role, variant, accentColor, accentBg, onLo
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.75 }} className="flex items-center justify-between text-xs">
                 <label className="flex items-center gap-2 text-slate-500 cursor-pointer">
-                  <input type="checkbox" className="rounded border-slate-300" /> Remember me
+                  <input type="checkbox" className="rounded border-emerald-300" /> Remember me
                 </label>
                 <button type="button" className="font-semibold hover:underline" style={{ color: accentColor }}>Forgot password?</button>
               </motion.div>

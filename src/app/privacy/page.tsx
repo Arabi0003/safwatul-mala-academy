@@ -1,10 +1,10 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
 import { academy } from "@/config/academy";
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Privacy" title="Privacy Policy" subtitle="Your information is an amanah — a trust we handle with care." />
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-6 space-y-8 text-slate-700 leading-relaxed">

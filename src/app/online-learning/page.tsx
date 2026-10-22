@@ -1,10 +1,10 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import Link from "next/link";
 import { Monitor, Clock, Globe2, Video, ArrowRight } from "lucide-react";
 
 export default function OnlineLearningPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Virtual Classes" title="Online Learning" subtitle="Learn the Qur'an, Arabic, and Islamic studies from anywhere in the world — with live, interactive teachers from Abuja." />
 
       <section className="py-24">
@@ -15,7 +15,7 @@ export default function OnlineLearningPage() {
             { icon: Globe2, title: "Global Student Family", desc: "Join learners from across Nigeria, Africa, Europe, and the Americas." },
             { icon: Monitor, title: "Digital Resources", desc: "Access learning materials, progress tracking, and recordings." },
           ].map((f, i) => (
-            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 hover:shadow-xl transition">
               <div className="h-14 w-14 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-6">
                 <f.icon className="h-7 w-7 text-[var(--orange)]" />
               </div>

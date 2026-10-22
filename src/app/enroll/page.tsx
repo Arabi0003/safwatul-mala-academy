@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ export default function EnrollPage() {
 
   return (
     <div className="min-h-screen bg-emerald-50 pt-28 pb-20 px-6">
-      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-emerald-200 overflow-hidden">
         <div className="bg-[var(--navy-dark)] p-8 text-center text-white relative">
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--navy-dark)] to-[var(--navy)]"></div>
           <div className="relative z-10 flex flex-col items-center">
@@ -45,7 +45,7 @@ export default function EnrollPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-[var(--navy)] mb-6 text-center">Select Programme</h2>
               {["Full-Time Hifz & Academics", "Evening Qur'an & Arabic", "Weekend Madrasah", "Online/Remote Learning"].map((prog) => (
-                <button key={prog} onClick={() => startForm(prog)} className="w-full flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[var(--sky)] hover:bg-[var(--sky-light)] transition text-left text-[var(--navy)] font-bold">
+                <button key={prog} onClick={() => startForm(prog)} className="w-full flex items-center justify-between p-4 border border-emerald-200 rounded-xl hover:border-[var(--sky)] hover:bg-[var(--sky-light)] transition text-left text-[var(--navy)] font-bold">
                   {prog} <ArrowRight className="h-5 w-5 text-[var(--orange)]" />
                 </button>
               ))}
@@ -53,22 +53,22 @@ export default function EnrollPage() {
           )}
           {step === 2 && (
             <form onSubmit={submitForm} className="space-y-6">
-              <div className="bg-emerald-50 p-4 rounded-xl border border-slate-200 mb-6">
+              <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200 mb-6">
                 <p className="text-xs text-slate-500 uppercase font-bold">Selected Programme</p>
                 <p className="text-[var(--navy)] font-bold">{formData.program}</p>
               </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-bold text-[var(--navy)] mb-1">Student Full Name</label>
-                  <input required type="text" onChange={(e)=>setFormData({...formData, fullName: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 focus:border-[var(--sky)] focus:ring-1 focus:ring-[var(--sky)] outline-none" placeholder="e.g. Abdullah Ahmad" />
+                  <input required type="text" onChange={(e)=>setFormData({...formData, fullName: e.target.value})} className="w-full p-3 rounded-xl border border-emerald-300 focus:border-[var(--sky)] focus:ring-1 focus:ring-[var(--sky)] outline-none" placeholder="e.g. Abdullah Ahmad" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-[var(--navy)] mb-1">Date of Birth</label>
-                  <input required type="date" onChange={(e)=>setFormData({...formData, dob: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" />
+                  <input required type="date" onChange={(e)=>setFormData({...formData, dob: e.target.value})} className="w-full p-3 rounded-xl border border-emerald-300 outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-[var(--navy)] mb-1">Guardian Phone Number</label>
-                  <input required type="tel" onChange={(e)=>setFormData({...formData, phone: e.target.value})} className="w-full p-3 rounded-xl border border-slate-300 outline-none" />
+                  <input required type="tel" onChange={(e)=>setFormData({...formData, phone: e.target.value})} className="w-full p-3 rounded-xl border border-emerald-300 outline-none" />
                 </div>
               </div>
               <button type="submit" className="w-full bg-[var(--navy)] hover:bg-[var(--navy-dark)] text-white font-bold py-4 rounded-xl transition shadow-md flex items-center justify-center gap-2">

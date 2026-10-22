@@ -1,9 +1,9 @@
-﻿import PageHero from "@/components/ui/PageHero";
+import PageHero from "@/components/ui/PageHero";
 import { GraduationCap, Heart, Award, Users } from "lucide-react";
 
 export default function TeachersPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 bg-white">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 bg-white">
       <PageHero tag="Our Educators" title="Teachers & Learning Approach" subtitle="Qualified, caring, and continuously trained — our teachers are the heart of AS Safwatul-Mala Academy." />
 
       <section className="py-24">
@@ -14,7 +14,7 @@ export default function TeachersPage() {
             { icon: Award, title: "Continuous Training", desc: "Regular professional development to stay aligned with best teaching practices." },
             { icon: Users, title: "Small Class Sizes", desc: "Maximum 15 students per class, ensuring each voice is heard." },
           ].map((t, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-emerald-50 border border-slate-200 hover:shadow-xl transition">
+            <div key={i} className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 hover:shadow-xl transition">
               <div className="h-12 w-12 rounded-xl bg-[var(--orange)]/10 flex items-center justify-center mb-4">
                 <t.icon className="h-6 w-6 text-[var(--orange)]" />
               </div>

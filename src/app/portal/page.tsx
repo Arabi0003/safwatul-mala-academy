@@ -19,7 +19,7 @@ function PortalContent() {
   const welcome = searchParams.get("welcome");
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900">
       <PageHero tag="Secure Access" title="Portal Access" subtitle="Dedicated portals for every member of the Safwatul-Mala family." />
 
       <section className="py-20">

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -58,7 +58,7 @@ export default function SplashLoader({ children, duration = 4500 }: { children: 
                 <Image src="/safwa.png" alt="Logo" fill priority className="object-cover" />
               </div>
 
-              <h1 className="font-serif text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+              <h1 className="font-serif text-3xl font-bold tracking-tight text-emerald-900 md:text-4xl">
                 AS SAFWATUL-MALA
               </h1>
               <p className="mt-2 text-xs font-bold uppercase tracking-[0.35em] text-green-600">

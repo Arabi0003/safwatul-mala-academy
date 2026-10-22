@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function FounderPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-slate-900 min-h-screen bg-emerald-50">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/70 to-emerald-100 text-emerald-900 min-h-screen bg-emerald-50">
       <PageHero 
         title="Meet Our Founder" 
         subtitle="A vision built on faith, integrity, and excellence."
@@ -30,7 +30,7 @@ export default function FounderPage() {
             
             {/* Beautiful Amber Framed Image */}
             <div className="w-full lg:w-1/3 flex justify-center">
-              <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-t-full bg-slate-200 shadow-2xl border-[6px] border-teal-500 overflow-hidden group">
+              <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-t-full bg-emerald-200 shadow-2xl border-[6px] border-teal-500 overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 to-transparent z-10 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <span className="text-teal-400 font-serif font-bold text-xl tracking-wider">Visionary</span>
                 </div>
@@ -52,7 +52,7 @@ export default function FounderPage() {
               </h2>
               <div className="w-20 h-1 bg-teal-500 mb-8 rounded-full"></div>
               
-              <div className="space-y-6 text-slate-900 font-medium text-lg leading-relaxed">
+              <div className="space-y-6 text-emerald-900 font-medium text-lg leading-relaxed">
                 <p>
                   Welcome to As Safwatul-Mala Academy. My vision in establishing this institution was rooted in a profound desire to bridge the gap between academic brilliance and uncompromising moral integrity. 
                 </p>

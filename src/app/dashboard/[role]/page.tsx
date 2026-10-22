@@ -16,10 +16,10 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-1">{greeting}!</h1>
+          <h1 className="text-3xl font-bold text-emerald-900 mb-1">{greeting}!</h1>
           <p className="text-slate-500 font-medium">Here is what is happening in the academy today.</p>
         </div>
-        <button className="px-6 py-2.5 bg-blue-950 text-white rounded-xl font-bold hover:bg-blue-900 transition-colors shadow-lg shadow-blue-900/20">
+        <button className="px-6 py-2.5 bg-emerald-950 text-white rounded-xl font-bold hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-900/20">
           + Quick Action
         </button>
       </div>
@@ -27,8 +27,8 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { title: 'Total Students', value: '1,248', trend: '+12% this month', icon: <Users size={24}/>, color: 'text-blue-600', bg: 'bg-blue-100' },
-          { title: 'Active Classes', value: '42', trend: 'Ongoing right now', icon: <BookOpen size={24}/>, color: 'text-amber-600', bg: 'bg-amber-100' },
+          { title: 'Total Students', value: '1,248', trend: '+12% this month', icon: <Users size={24}/>, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+          { title: 'Active Classes', value: '42', trend: 'Ongoing right now', icon: <BookOpen size={24}/>, color: 'text-teal-600', bg: 'bg-teal-100' },
           { title: 'Average Attendance', value: '94.5%', trend: '+2.1% from last week', icon: <TrendingUp size={24}/>, color: 'text-green-600', bg: 'bg-green-100' },
           { title: 'Pending Reviews', value: '18', trend: 'Requires attention', icon: <AlertCircle size={24}/>, color: 'text-red-600', bg: 'bg-red-100' },
         ].map((stat, i) => (
@@ -39,7 +39,7 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
               </div>
             </div>
             <h3 className="text-slate-500 font-bold text-sm mb-1">{stat.title}</h3>
-            <p className="text-3xl font-black text-slate-900 mb-2">{stat.value}</p>
+            <p className="text-3xl font-black text-emerald-900 mb-2">{stat.value}</p>
             <p className="text-xs font-bold text-slate-400">{stat.trend}</p>
           </div>
         ))}
@@ -51,8 +51,8 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
         {/* Recent Activity Table */}
         <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-slate-900">Recent Registrations</h2>
-            <button className="text-sm font-bold text-amber-600 hover:text-amber-700">View All</button>
+            <h2 className="text-xl font-bold text-emerald-900">Recent Registrations</h2>
+            <button className="text-sm font-bold text-teal-600 hover:text-teal-700">View All</button>
           </div>
           
           <div className="overflow-x-auto">
@@ -68,12 +68,12 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
               <tbody className="text-sm">
                 {[
                   { name: 'Abdullah Ibrahim', prog: 'Hifz Program', date: 'Oct 24, 2024', status: 'Admitted', color: 'bg-green-100 text-green-700' },
-                  { name: 'Aisha Muhammad', prog: 'Arabic Immersion', date: 'Oct 23, 2024', status: 'Pending', color: 'bg-amber-100 text-amber-700' },
+                  { name: 'Aisha Muhammad', prog: 'Arabic Immersion', date: 'Oct 23, 2024', status: 'Pending', color: 'bg-teal-100 text-teal-700' },
                   { name: 'Umar Farooq', prog: 'Standard Academic', date: 'Oct 22, 2024', status: 'Admitted', color: 'bg-green-100 text-green-700' },
-                  { name: 'Fatima Sani', prog: 'Weekend Islamiyyah', date: 'Oct 22, 2024', status: 'Reviewed', color: 'bg-blue-100 text-blue-700' },
+                  { name: 'Fatima Sani', prog: 'Weekend Islamiyyah', date: 'Oct 22, 2024', status: 'Reviewed', color: 'bg-emerald-100 text-emerald-700' },
                 ].map((row, i) => (
-                  <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td className="py-4 font-bold text-slate-900">{row.name}</td>
+                  <tr key={i} className="border-b border-slate-50 hover:bg-emerald-50/50 transition-colors">
+                    <td className="py-4 font-bold text-emerald-900">{row.name}</td>
                     <td className="py-4 font-medium text-slate-500">{row.prog}</td>
                     <td className="py-4 font-medium text-slate-500">{row.date}</td>
                     <td className="py-4">
@@ -89,12 +89,12 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
         </div>
 
         {/* Schedule Widget */}
-        <div className="bg-gradient-to-br from-blue-950 to-slate-900 rounded-3xl shadow-xl p-6 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-br from-emerald-950 to-slate-900 rounded-3xl shadow-xl p-6 text-white relative overflow-hidden">
           {/* Decorative glow */}
-          <div className="absolute -top-20 -right-20 w-48 h-48 bg-amber-500/20 blur-3xl rounded-full pointer-events-none"></div>
+          <div className="absolute -top-20 -right-20 w-48 h-48 bg-teal-500/20 blur-3xl rounded-full pointer-events-none"></div>
           
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2 relative z-10">
-            <Calendar className="text-amber-400" /> Upcoming Schedule
+            <Calendar className="text-teal-400" /> Upcoming Schedule
           </h2>
           
           <div className="space-y-4 relative z-10">
@@ -106,10 +106,10 @@ export default function Dashboard({ params }: { params: Promise<{ role: string }
             ].map((schedule, i) => (
               <div key={i} className="flex gap-4 items-start group cursor-pointer">
                 <div className="w-16 flex-shrink-0 text-right mt-1">
-                  <p className="text-xs font-bold text-slate-400 group-hover:text-amber-400 transition-colors">{schedule.time}</p>
+                  <p className="text-xs font-bold text-slate-400 group-hover:text-teal-400 transition-colors">{schedule.time}</p>
                 </div>
                 <div className="relative pb-6 border-l border-white/20 pl-4 last:border-0 last:pb-0">
-                  <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors ring-4 ring-blue-950"></div>
+                  <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-slate-600 group-hover:bg-teal-400 transition-colors ring-4 ring-emerald-950"></div>
                   <p className="font-bold text-white">{schedule.event}</p>
                   <p className="text-sm text-slate-400 mt-1">{schedule.desc}</p>
                 </div>

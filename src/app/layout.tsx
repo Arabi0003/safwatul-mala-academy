@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${geistSans.variable} ${playfair.variable} antialiased bg-slate-50 text-slate-900`}>
+      <body className={`${geistSans.variable} ${playfair.variable} antialiased bg-emerald-50 text-emerald-900`}>
         <AppShell>
           <Navbar />
           {children}
