@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown, BookOpen } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface SubLink { label: string; href: string }
@@ -95,15 +96,20 @@ export default function Navbar() {
         }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
-              <span className="absolute inset-0 flex items-center justify-center text-lg font-bold text-white">
-                S
-              </span>
+          {/* Logo with Official Image */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-white/10 p-1 border border-emerald-500/30 shadow-lg shadow-emerald-500/10 group-hover:border-emerald-400 group-hover:shadow-emerald-500/30 transition-all">
+              <Image
+                src="/safwa.png"
+                alt="Safwatulmala Academy Logo"
+                fill
+                className="object-contain p-0.5"
+                sizes="40px"
+                priority
+              />
             </div>
-            <div className="hidden sm:block">
-              <p className="text-base font-bold text-white leading-tight tracking-wide">
+            <div>
+              <p className="text-base font-bold text-white leading-tight tracking-wide group-hover:text-emerald-300 transition-colors">
                 Safwatulmala
               </p>
               <p className="text-[10px] text-emerald-300/70 leading-none tracking-widest uppercase">
@@ -161,7 +167,7 @@ export default function Navbar() {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Link
-              href="/enroll"
+              href="/register"
               className="relative overflow-hidden rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-shadow"
             >
               <span className="relative z-10">Enroll Now</span>
@@ -209,9 +215,9 @@ export default function Navbar() {
               transition={{ type: 'tween', duration: 0.25 }}
               className="fixed top-0 left-0 bottom-0 z-40 w-80 max-w-[85vw] bg-gradient-to-b from-emerald-950 via-emerald-950 to-emerald-900 shadow-2xl lg:hidden overflow-y-auto overscroll-contain"
             >
-              <div className="flex items-center gap-2.5 px-5 pt-5 pb-4 border-b border-emerald-800/30">
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white font-bold text-sm">
-                  S
+              <div className="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-emerald-800/30">
+                <div className="relative h-9 w-9 overflow-hidden rounded-xl bg-white/10 p-1 border border-emerald-500/30">
+                  <Image src="/safwa.png" alt="Logo" fill className="object-contain p-0.5" sizes="36px" />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">Safwatulmala</p>
@@ -277,7 +283,7 @@ export default function Navbar() {
 
               <div className="px-5 pt-4 pb-8 border-t border-emerald-800/30 mt-2">
                 <Link
-                  href="/enroll"
+                  href="/register"
                   onClick={() => setMobileOpen(false)}
                   className="block w-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg"
                 >
